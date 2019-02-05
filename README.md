@@ -1,5 +1,5 @@
-Meteorix的Blog
-==============
+Meteorix's Blog
+===============
 
-[githubio]("http://meteorix.github.io/")
+[githubio](http://meteorix.github.io/)
 
