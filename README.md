@@ -1,5 +1,4 @@
 Meteorix's Blog
 ===============
 
-[githubio](http://meteorix.github.io/)
-
+[http://meteorix.github.io](http://meteorix.github.io/)
