@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Python Design Patterns | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="如何写出更好的代码——刘欣 2018.6.20  “Design patterns help you learn from others’ successes instead of your own failures”  断断续续读了好久设计模式，记录此篇总结。设计模式最初发源于C++/Java等静态语言，Python语言本身的很多特性已经覆盖了设计模式，甚至用了都不知道，比如：decorator">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python Design Patterns">
+<meta property="og:url" content="http://yoursite.com/2018/06/20/pypatterns/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="如何写出更好的代码——刘欣 2018.6.20  “Design patterns help you learn from others’ successes instead of your own failures”  断断续续读了好久设计模式，记录此篇总结。设计模式最初发源于C++/Java等静态语言，Python语言本身的很多特性已经覆盖了设计模式，甚至用了都不知道，比如：decorator">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-02-05T12:47:52.085Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python Design Patterns">
+<meta name="twitter:description" content="如何写出更好的代码——刘欣 2018.6.20  “Design patterns help you learn from others’ successes instead of your own failures”  断断续续读了好久设计模式，记录此篇总结。设计模式最初发源于C++/Java等静态语言，Python语言本身的很多特性已经覆盖了设计模式，甚至用了都不知道，比如：decorator">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-pypatterns" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/20/pypatterns/" class="article-date">
+  <time datetime="2018-06-20T12:41:32.000Z" itemprop="datePublished">2018-06-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Python Design Patterns
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>如何写出更好的代码——刘欣 2018.6.20</p>
+<blockquote>
+<p>“Design patterns help you learn from others’ successes instead of your own failures”</p>
+</blockquote>
+<p>断断续续读了好久设计模式，记录此篇总结。设计模式最初发源于C++/Java等静态语言，Python语言本身的很多特性已经覆盖了设计模式，甚至用了都不知道，比如：decorator/metaclass/generator/getattr等。但是写稍微大型的项目时，还是经常力不从心。就如上面引用的那句话，通过设计模式可以学习前人的智慧，写出更好的代码。</p>
+<p>所有代码都在<a href="https://github.com/Meteorix/python-design-patterns" target="_blank" rel="noopener">https://github.com/Meteorix/python-design-patterns</a>，python3环境下可以跑通，请跑起来玩玩。代码仅限演示作用，更注重清晰地用python语法展示patterns，而不是完备性，请勿用在生产环境。欢迎提issue和pr : )</p>
+<h2 id="设计模式六大原则"><a href="#设计模式六大原则" class="headerlink" title="设计模式六大原则"></a>设计模式六大原则</h2><ol>
+<li><p>单一职责原则</p>
+<ul>
+<li>一个类只做一件事情，模块化</li>
+</ul>
+</li>
+<li><p>里氏替换原则</p>
+<ul>
+<li>所有使用父类的地方必须能完全替换为使用其子类</li>
+<li>即：子类可以扩展父类的功能，但不能改变父类原有的功能</li>
+</ul>
+</li>
+<li><p>依赖倒置原则</p>
+<ul>
+<li>高层模块不应该依赖低层模块，二者都应该依赖其抽象</li>
+<li>抽象不应该依赖实现；实现应该依赖抽象</li>
+<li>面向接口编程，而不是面向实现编程，Duck Type</li>
+</ul>
+</li>
+<li><p>接口隔离原则</p>
+<ul>
+<li>一个类对另一个类依赖的接口越少越好</li>
+</ul>
+</li>
+<li><p>最小知识原则</p>
+<ul>
+<li>一个类对另一个类知道得越少越好</li>
+</ul>
+</li>
+<li><p>开闭原则</p>
+<ul>
+<li>类、模块、函数对扩展开放，对修改关闭</li>
+<li>尽量在不修改源代码的情况下进行扩展</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>其实以上的原则不限于类的设计，很多工程上的系统设计也适用。</p>
+</blockquote>
+<h2 id="常用设计模式"><a href="#常用设计模式" class="headerlink" title="常用设计模式"></a>常用设计模式</h2><h3 id="创造模式"><a href="#创造模式" class="headerlink" title="创造模式"></a>创造模式</h3><h4 id="Singleton"><a href="#Singleton" class="headerlink" title="Singleton"></a>Singleton</h4><p>一个类只有一个对象，似乎不太需要解释：）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">class SingletonMeta(type):</span><br><span class="line"></span><br><span class="line">    instance = None</span><br><span class="line"></span><br><span class="line">    def __call__(cls, *args, **kwargs):</span><br><span class="line">        if cls.instance is None:</span><br><span class="line">            cls.instance = super(SingletonMeta, cls).__call__(*args, **kwargs)</span><br><span class="line">        return cls.instance</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class CurrentUser(object, metaclass=SingletonMeta):</span><br><span class="line"></span><br><span class="line">    def __init__(self, name=None):</span><br><span class="line">        super(CurrentUser, self).__init__()</span><br><span class="line">        self.name = name</span><br><span class="line"></span><br><span class="line">    def __str__(self):</span><br><span class="line">        return repr(self) + &quot;:&quot; + repr(self.name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    u = CurrentUser(&quot;liu&quot;)</span><br><span class="line">    print(u)</span><br><span class="line">    u2 = CurrentUser()</span><br><span class="line">    u2.name = &quot;xin&quot;</span><br><span class="line">    print(u2)</span><br><span class="line">    print(u)</span><br><span class="line">    assert u is u2</span><br></pre></td></tr></table></figure>
+<p>这个例子用MetaClass实现，其实Python里还有其他实现方式。但是Python里的MetaClass就是用来实例化Class的，用来实现单例类正好。</p>
+<h4 id="Factory"><a href="#Factory" class="headerlink" title="Factory"></a>Factory</h4><p>工厂模式，用于生产一大堆对象。这里用<code>__subclasses__</code>来获取子类，这样可以动态扩展子类而不改变factory的代码。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class Shape(object):</span><br><span class="line">    @classmethod</span><br><span class="line">    def factory(cls, name, *args, **kwargs):</span><br><span class="line">        types = &#123;c.__name__: c for c in cls.__subclasses__()&#125;  # 忽略性能:P</span><br><span class="line">        shape_class = types[name]</span><br><span class="line">        return shape_class(*args, **kwargs)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Circle(Shape):</span><br><span class="line">    pass</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Square(Shape):</span><br><span class="line">    pass</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    shapes = [&quot;Circle&quot;, &quot;Square&quot;, &quot;Square&quot;, &quot;Circle&quot;]</span><br><span class="line">    for i in shapes:</span><br><span class="line">        s = Shape.factory(i)</span><br><span class="line">        print(s)</span><br></pre></td></tr></table></figure></p>
+<h3 id="结构模式"><a href="#结构模式" class="headerlink" title="结构模式"></a>结构模式</h3><h4 id="MVC"><a href="#MVC" class="headerlink" title="MVC"></a>MVC</h4><p>可能是最有名的设计模式，<code>数据&lt;-&gt;控制器&lt;-&gt;视图</code>。数据和视图分离，还可以同一份数据渲染多个视图。MVC做的最好的应该是各种Web框架和GUI框架。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">class Model(object):</span><br><span class="line">    products = &#123;</span><br><span class="line">        &apos;milk&apos;: &#123;&apos;price&apos;: 1.50, &apos;quantity&apos;: 10&#125;,</span><br><span class="line">        &apos;eggs&apos;: &#123;&apos;price&apos;: 0.20, &apos;quantity&apos;: 100&#125;,</span><br><span class="line">        &apos;cheese&apos;: &#123;&apos;price&apos;: 2.00, &apos;quantity&apos;: 10&#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    def get(self, name):</span><br><span class="line">        return self.products.get(name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class View(object):</span><br><span class="line">    def show_item_list(self, item_list):</span><br><span class="line">        print(&apos;-&apos; * 20)</span><br><span class="line">        for item in item_list:</span><br><span class="line">            print(&quot;* Name: %s&quot; % item)</span><br><span class="line">        print(&apos;-&apos; * 20)</span><br><span class="line"></span><br><span class="line">    def show_item_info(self, name, item_info):</span><br><span class="line">        print(&quot;Name: %s Price: %s Quantity: %s&quot; % (name, item_info[&apos;price&apos;], item_info[&apos;quantity&apos;]))</span><br><span class="line">        print(&apos;-&apos; * 20)</span><br><span class="line"></span><br><span class="line">    def show_empty(self, name):</span><br><span class="line">        print(&quot;Name: %s not found&quot; % name)</span><br><span class="line">        print(&apos;-&apos; * 20)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Controller(object):</span><br><span class="line">    def __init__(self, model, view):</span><br><span class="line">        self.model = model</span><br><span class="line">        self.view = view</span><br><span class="line"></span><br><span class="line">    def show_items(self):</span><br><span class="line">        items = self.model.products.keys()</span><br><span class="line">        self.view.show_item_list(items)</span><br><span class="line"></span><br><span class="line">    def show_item_info(self, item):</span><br><span class="line">        item_info = self.model.get(item)</span><br><span class="line">        if item_info:</span><br><span class="line">            self.view.show_item_info(item, item_info)</span><br><span class="line">        else:</span><br><span class="line">            self.view.show_empty(item)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    model = Model()</span><br><span class="line">    view = View()</span><br><span class="line">    controller = Controller(model, view)</span><br><span class="line">    controller.show_items()</span><br><span class="line">    controller.show_item_info(&apos;cheese&apos;)</span><br><span class="line">    controller.show_item_info(&apos;apple&apos;)</span><br></pre></td></tr></table></figure></p>
+<p>上面的例子还只演示了数据到视图的渲染，其实MVC还包括通过视图修改数据。</p>
+<h4 id="Proxy"><a href="#Proxy" class="headerlink" title="Proxy"></a>Proxy</h4><p>不直接调用一个类，而是通过一个代理来访问。这样做的好处有：可以切换底层实现、权限控制、安全检查等。当然最有用的是可以实现远程代理，jsonrpc就是一种。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">class Implementation(object):</span><br><span class="line">    def add(self, x, y):</span><br><span class="line">        return x + y</span><br><span class="line"></span><br><span class="line">    def minus(self, x, y):</span><br><span class="line">        return x - y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Proxy(object):</span><br><span class="line">    def __init__(self, impl):</span><br><span class="line">        self._impl = impl</span><br><span class="line"></span><br><span class="line">    def __getattr__(self, name):</span><br><span class="line">        return getattr(self._impl, name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    p = Proxy(Implementation())</span><br><span class="line">    print(p.add(1, 2))</span><br><span class="line">    print(p.minus(1, 2))</span><br></pre></td></tr></table></figure></p>
+<h4 id="Decorator"><a href="#Decorator" class="headerlink" title="Decorator"></a>Decorator</h4><p>装饰器，似乎不太需要解释，Python自带的语法，可以用来做很多事情，几个简单例子：</p>
+<ul>
+<li>路由</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">from flask import Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line">@app.route(&apos;/&apos;)</span><br><span class="line">def index():</span><br><span class="line">    return &apos;Hello, World&apos;</span><br><span class="line"></span><br><span class="line">@app.route(&apos;/home&apos;)</span><br><span class="line">def home():</span><br><span class="line">    return &apos;Welcome Home&apos;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>权限控制</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">from django.contrib.auth.decorators import login_required</span><br><span class="line"></span><br><span class="line">@login_required</span><br><span class="line">def my_view(request):</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<ul>
+<li>输入输出</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">from functools import wraps</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def debug(f):</span><br><span class="line">    @wraps(f)</span><br><span class="line">    def debug_function(*args, **kwargs):</span><br><span class="line">        print(&apos;call: &apos;, f.__name__, args, kwargs)</span><br><span class="line">        ret = f(*args, **kwargs)</span><br><span class="line">        print(&apos;return: &apos;, ret)</span><br><span class="line">    return debug_function</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@debug</span><br><span class="line">def foo(a, b, c=None):</span><br><span class="line">    print(a, b, c)</span><br><span class="line">    return True</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    foo(1, 2, 3)</span><br></pre></td></tr></table></figure>
+<h3 id="行为模式"><a href="#行为模式" class="headerlink" title="行为模式"></a>行为模式</h3><h4 id="Template"><a href="#Template" class="headerlink" title="Template"></a>Template</h4><p>基类作为模板，定义好接口，子类来实现功能，最好的例子就是Qt里的各种QWidget。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">class ApplicateFramework(object):</span><br><span class="line">    def __init__(self):</span><br><span class="line">        self.setup()</span><br><span class="line">        self.show()</span><br><span class="line"></span><br><span class="line">    def setup(self):</span><br><span class="line">        pass</span><br><span class="line"></span><br><span class="line">    def show(self):</span><br><span class="line">        pass</span><br><span class="line"></span><br><span class="line">    def close(self):</span><br><span class="line">        pass</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class MyApplication(ApplicateFramework):</span><br><span class="line">    def setup(self):</span><br><span class="line">        print(&quot;setup&quot;, self)</span><br><span class="line"></span><br><span class="line">    def show(self):</span><br><span class="line">        print(&quot;show&quot;, self)</span><br><span class="line"></span><br><span class="line">    def close(self):</span><br><span class="line">        print(&quot;close&quot;, self)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    app = MyApplication()</span><br><span class="line">    app.close()</span><br></pre></td></tr></table></figure>
+<h4 id="State-Machine"><a href="#State-Machine" class="headerlink" title="State Machine"></a>State Machine</h4><p>状态机，<code>当前状态 + 操作 =&gt; 下一个状态</code>，似乎也不用怎么解释。如下例子实现的状态机，可以自定义状态、操作和转换规则。扩展的时候无需修改状态机代码，符合<strong>开闭原则</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">class StateMachine(object):</span><br><span class="line"></span><br><span class="line">    def __init__(self, init_state):</span><br><span class="line">        self.current_state = init_state</span><br><span class="line">        self.current_state.run()</span><br><span class="line"></span><br><span class="line">    def step(self, action):</span><br><span class="line">        self.current_state = self.current_state.next(action)</span><br><span class="line">        self.current_state.run()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class State(object):</span><br><span class="line">    def __init__(self, name):</span><br><span class="line">        self.name = name</span><br><span class="line"></span><br><span class="line">    def __str__(self):</span><br><span class="line">        return &quot;&lt;State &apos;%s&apos;&gt;&quot; % self.name</span><br><span class="line"></span><br><span class="line">    def next(self, action):</span><br><span class="line">        if (self, action) in mapping:</span><br><span class="line">            next_state = mapping[(self, action)]</span><br><span class="line">        else:</span><br><span class="line">            next_state = self</span><br><span class="line">        print(&quot;%s + %s =&gt; %s&quot; % (self, action, next_state))</span><br><span class="line">        return next_state</span><br><span class="line"></span><br><span class="line">    def run(self):</span><br><span class="line">        print(self, &quot;is current state&quot;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Action(object):</span><br><span class="line">    def __init__(self, name):</span><br><span class="line">        self.name = name</span><br><span class="line"></span><br><span class="line">    def __str__(self):</span><br><span class="line">        return &quot;&lt;Action &apos;%s&apos;&gt;&quot; % self.name</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">State.Running = State(&quot;Running&quot;)</span><br><span class="line">State.Stopped = State(&quot;Stopped&quot;)</span><br><span class="line">State.Paused = State(&quot;Paused&quot;)</span><br><span class="line"></span><br><span class="line">Action.start = Action(&quot;start&quot;)</span><br><span class="line">Action.stop = Action(&quot;stop&quot;)</span><br><span class="line">Action.pause = Action(&quot;pause&quot;)</span><br><span class="line">Action.resume = Action(&quot;resume&quot;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mapping = &#123;</span><br><span class="line">    (State.Stopped, Action.start): State.Running,</span><br><span class="line">    (State.Running, Action.stop): State.Stopped,</span><br><span class="line">    (State.Running, Action.pause): State.Paused,</span><br><span class="line">    (State.Paused, Action.resume): State.Running,</span><br><span class="line">    (State.Paused, Action.stop): State.Stopped,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    state_machine = StateMachine(State.Stopped)</span><br><span class="line">    state_machine.step(Action.start)</span><br><span class="line">    state_machine.step(Action.pause)</span><br><span class="line">    state_machine.step(Action.resume)</span><br><span class="line">    state_machine.step(Action.stop)</span><br></pre></td></tr></table></figure>
+<h4 id="Iterator"><a href="#Iterator" class="headerlink" title="Iterator"></a>Iterator</h4><p>迭代器，在Python中也不需要怎么解释，使用起来好像理所应当一样。实际上迭代器的一大优势是无需关心数据类型，一样的<code>for</code>语法。另一大优势是无需事先计算好所有元素，而是在迭代到的时候才计算。如下例子是Python中使用<code>yield</code>语法产生生成器<code>generator</code>来实现的迭代器，优势一目了然。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">def fibonacci(count=100):</span><br><span class="line">    a, b = 1, 2</span><br><span class="line">    yield a</span><br><span class="line">    yield b</span><br><span class="line">    while count:</span><br><span class="line">        a, b = b, a + b</span><br><span class="line">        count -= 1</span><br><span class="line">        yield b</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">for i in fibonacci():</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure></p>
+<h4 id="Command"><a href="#Command" class="headerlink" title="Command"></a>Command</h4><p>Command封装了一个原子操作，在类外面实现，个人认为最大的作用是实现<code>redo/undo</code>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">from collections import deque</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Document(object):</span><br><span class="line">    value = &quot;&quot;</span><br><span class="line">    cmd_stack = deque()</span><br><span class="line"></span><br><span class="line">    @classmethod</span><br><span class="line">    def execute(cls, cmd):</span><br><span class="line">        cmd.redo()</span><br><span class="line">        cls.cmd_stack.append(cmd)</span><br><span class="line"></span><br><span class="line">    @classmethod</span><br><span class="line">    def undo(cls):</span><br><span class="line">        cmd = cls.cmd_stack.pop()</span><br><span class="line">        cmd.undo()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class AddTextCommand(object):</span><br><span class="line">    def __init__(self, text):</span><br><span class="line">        self.text = text</span><br><span class="line"></span><br><span class="line">    def redo(self):</span><br><span class="line">        Document.value += self.text</span><br><span class="line"></span><br><span class="line">    def undo(self):</span><br><span class="line">        Document.value = Document.value[:-len(self.text)]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    cmds = [AddTextCommand(&quot;liu&quot;), AddTextCommand(&quot;xin&quot;), AddTextCommand(&quot;heihei&quot;)]</span><br><span class="line">    for cmd in cmds:</span><br><span class="line">        Document.execute(cmd)</span><br><span class="line">        print(Document.value)</span><br><span class="line"></span><br><span class="line">    for i in range(len(cmds)):</span><br><span class="line">        Document.undo()</span><br><span class="line">        print(Document.value)</span><br></pre></td></tr></table></figure></p>
+<h4 id="Chain-Of-Responsibility"><a href="#Chain-Of-Responsibility" class="headerlink" title="Chain Of Responsibility"></a>Chain Of Responsibility</h4><p>链式Handler处理请求，某一个处理成功就返回。用Chain来动态构造Handler序列。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">class Handler(object):</span><br><span class="line"></span><br><span class="line">    def __init__(self):</span><br><span class="line">        self.successor = None</span><br><span class="line"></span><br><span class="line">    def handle(self, data):</span><br><span class="line">        res = self._handle(data)</span><br><span class="line">        if res:</span><br><span class="line">            return res</span><br><span class="line">        if self.successor:</span><br><span class="line">            return self.successor.handle(data)</span><br><span class="line"></span><br><span class="line">    def _handle(self, data):</span><br><span class="line">        raise NotImplementedError</span><br><span class="line"></span><br><span class="line">    def link(self, handler):</span><br><span class="line">        self.successor = handler</span><br><span class="line">        return handler</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class DictHandler(Handler):</span><br><span class="line">    def _handle(self, data):</span><br><span class="line">        if isinstance(data, dict):</span><br><span class="line">            print(&quot;handled by %s&quot; % self)</span><br><span class="line">            return True</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class ListHandler(Handler):</span><br><span class="line">    def _handle(self, data):</span><br><span class="line">        if isinstance(data, list):</span><br><span class="line">            print(&quot;handled by %s&quot; % self)</span><br><span class="line">            return True</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    h = DictHandler()</span><br><span class="line">    h.link(ListHandler()).link(Handler())</span><br><span class="line">    ret = h.handle([1, 2, 3])</span><br><span class="line">    ret = h.handle(&#123;1: 2&#125;)</span><br></pre></td></tr></table></figure></p>
+<h4 id="Chaining-Method"><a href="#Chaining-Method" class="headerlink" title="Chaining Method"></a>Chaining Method</h4><p>链式反应，就这样一直点下去。很多Query构造函数是这样，API更好用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">class Player(object):</span><br><span class="line">    def __init__(self, name):</span><br><span class="line">        self.pos = (0, 0)</span><br><span class="line"></span><br><span class="line">    def move(self, pos):</span><br><span class="line">        self.pos = pos</span><br><span class="line">        print(&quot;move to %s, %s&quot; % self.pos)</span><br><span class="line">        return self</span><br><span class="line"></span><br><span class="line">    def say(self, text):</span><br><span class="line">        print(text)</span><br><span class="line">        return self</span><br><span class="line"></span><br><span class="line">    def home(self):</span><br><span class="line">        self.pos = (0, 0)</span><br><span class="line">        print(&quot;I am home&quot;)</span><br><span class="line">        return self</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    p = Player(&apos;liuxin&apos;)</span><br><span class="line">    p.move((1, 1)).say(&quot;haha&quot;).move((2, 3)).home().say(&quot;go to sleep&quot;)</span><br></pre></td></tr></table></figure>
+<h4 id="Visitor"><a href="#Visitor" class="headerlink" title="Visitor"></a>Visitor</h4><p>Visitor模式的目的是不改变原来的类，用另一个类来实现一些接口。下面的例子用Visitor模式实现了两种节点遍历的方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">class Node(object):</span><br><span class="line">    def __init__(self, name, children=()):</span><br><span class="line">        self.name = name</span><br><span class="line">        self.children = list(children)</span><br><span class="line"></span><br><span class="line">    def __str__(self):</span><br><span class="line">        return &apos;&lt;Node %s&gt;&apos; % self.name</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Visitor(object):</span><br><span class="line"></span><br><span class="line">    @classmethod</span><br><span class="line">    def visit(cls, node):</span><br><span class="line">        yield node</span><br><span class="line">        for child in node.children:</span><br><span class="line">            yield child</span><br><span class="line"></span><br><span class="line">    @classmethod</span><br><span class="line">    def visit2(cls, node):</span><br><span class="line">        for child in node.children:</span><br><span class="line">            yield child</span><br><span class="line">        yield node</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    root = Node(&apos;root&apos;, (Node(&apos;a&apos;), Node(&apos;b&apos;)))</span><br><span class="line">    visitor = Visitor()</span><br><span class="line">    for node in visitor.visit(root):</span><br><span class="line">        print(node)</span><br><span class="line">    for node in visitor.visit2(root):</span><br><span class="line">        print(node)</span><br></pre></td></tr></table></figure></p>
+<h4 id="Observer"><a href="#Observer" class="headerlink" title="Observer"></a>Observer</h4><p>当一个对象发生状态变化时，需要更新其他对象，用观察者模式来解耦这些对象，最小知识原则。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">class Observable(object):</span><br><span class="line"></span><br><span class="line">    def __init__(self):</span><br><span class="line">        self._observers = []</span><br><span class="line"></span><br><span class="line">    def attach(self, observer):</span><br><span class="line">        if observer not in self._observers:</span><br><span class="line">            self._observers.append(observer)</span><br><span class="line"></span><br><span class="line">    def detach(self, observer):</span><br><span class="line">        self._observers.remove(observer)</span><br><span class="line"></span><br><span class="line">    def notify(self):</span><br><span class="line">        for observer in self._observers:</span><br><span class="line">            observer.update(self)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Observer(object):</span><br><span class="line">    def update(self, observable):</span><br><span class="line">        print(&apos;updating %s by %s&apos; % (self, observable))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    clock = Observable()</span><br><span class="line">    user1 = Observer()</span><br><span class="line">    user2 = Observer()</span><br><span class="line">    clock.attach(user1)</span><br><span class="line">    clock.attach(user2)</span><br><span class="line">    clock.notify()</span><br></pre></td></tr></table></figure></p>
+<p>上面的例子演示了最简单的实现，通常在实际程序中观察者模式会在不同线程中，要注意线程安全的问题。</p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li><a href="https://github.com/faif/python-patterns" target="_blank" rel="noopener">python-patterns</a></li>
+<li><a href="http://python-3-patterns-idioms-test.readthedocs.io/en/latest/index.html" target="_blank" rel="noopener">python-3-patterns-idioms</a></li>
+<li><a href="http://www.uml.org.cn/sjms/201211023.asp" target="_blank" rel="noopener">设计模式六大原则</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/28737945" target="_blank" rel="noopener">设计模式一句话总结</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/06/20/pypatterns/" data-id="cjrrrkg5n0001wnxuqvy8gv8s" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/02/04/hello-world/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Hello World
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Python/" style="font-size: 10px;">Python</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/02/04/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/20/pypatterns/">Python Design Patterns</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
