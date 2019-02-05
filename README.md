@@ -1,4 +1,4 @@
 Meteorix's Blog
 ===============
 
-[http://meteorix.github.io](http://meteorix.github.io/)
+[https://meteorix.github.io](https://meteorix.github.io/)
