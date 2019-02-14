@@ -62,10 +62,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-hello-world" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-vsdebugpycpp" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/02/14/hello-world/" class="article-date">
-  <time datetime="2019-02-14T01:35:28.344Z" itemprop="datePublished">2019-02-14</time>
+    <a href="/2019/02/13/vsdebugpycpp/" class="article-date">
+  <time datetime="2019-02-13T15:51:32.000Z" itemprop="datePublished">2019-02-13</time>
 </a>
     
   </div>
@@ -76,7 +76,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/02/14/hello-world/">Hello World</a>
+      <a class="article-title" href="/2019/02/13/vsdebugpycpp/">vs2017混合调试py/c++</a>
     </h1>
   
 
@@ -84,35 +84,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>2019年了，再次尝试开始写博客。</p>
-<p>考虑了几个地方，不是广告太多，就是嫌太水，于是回归到<code>github pages + hexo</code>。seo的问题以后再说吧，先写给自己看。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://meteorix.github.io/2019/02/14/hello-world/" data-id="cjs3ypuz40004kzxuhk3sb0rl" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-vsdebugpycpp" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/02/14/vsdebugpycpp/" class="article-date">
-  <time datetime="2019-02-14T01:34:58.022Z" itemprop="datePublished">2019-02-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="vs2017混合调试py-c"><a href="#vs2017混合调试py-c" class="headerlink" title="vs2017混合调试py/c++"></a>vs2017混合调试py/c++</h1><h2 id="python卡死了怎么办"><a href="#python卡死了怎么办" class="headerlink" title="python卡死了怎么办?"></a>python卡死了怎么办?</h2><p>一般的python程序卡死，可以用pycharm debug。但是有时候是python和c/c++库混合开发，比如pyqt或者boost python程序卡死，就非常难查。以前都是二分法注释代码查找问题，异常低效。</p>
+        <h2 id="python卡死了怎么办"><a href="#python卡死了怎么办" class="headerlink" title="python卡死了怎么办?"></a>python卡死了怎么办?</h2><p>一般的python程序卡死，可以用pycharm debug。但是有时候是python和c/c++库混合开发，比如pyqt或者boost python程序卡死，就非常难查。以前都是二分法注释代码查找问题，异常低效。</p>
 <p>于是我尝试了vs2017的新功能：python &amp; c++ 混合调试 <a href="https://docs.microsoft.com/en-us/visualstudio/python/debugging-mixed-mode-c-cpp-python-in-visual-studio?view=vs-2017" target="_blank" rel="noopener">Debug Python and C++ together</a></p>
 <h2 id="vs2017-python"><a href="#vs2017-python" class="headerlink" title="vs2017 python"></a>vs2017 python</h2><p>vs一直被称为宇宙最强IDE，貌似python支持是vs2017新加的功能。相比pycharm之类的python编辑器，vs2017最大的优势就是在python和native c/c++代码的混合调试。包括：</p>
 <ul>
@@ -135,7 +107,7 @@
 </ol>
 <p>启动会比较慢，从输出窗口可以看出vs再加载各个py文件的symbol。。。（额，毕竟是试验性的功能）</p>
 <h2 id="让我们试试吧"><a href="#让我们试试吧" class="headerlink" title="让我们试试吧"></a>让我们试试吧</h2><h3 id="卡死时候暂停"><a href="#卡死时候暂停" class="headerlink" title="卡死时候暂停"></a>卡死时候暂停</h3><p>假设我们现在的Sunshine卡死了，这时候点击vs上的暂停按钮，就能立马停住。</p>
-<p><img src="/image/vsdebugpycpp/5c3d9dbcaa49f15c3726191dzKYsU5Qw.png" alt="image.png"></p>
+<p><img src="/images/vsdebugpycpp/5c3d9dbcaa49f15c3726191dzKYsU5Qw.png" alt="image.png"></p>
 <p>回想起Pycharm停不住的恐惧！毕竟vs是native的暂停，宇宙第一！</p>
 <h3 id="强大的混合调试"><a href="#强大的混合调试" class="headerlink" title="强大的混合调试"></a>强大的混合调试</h3><p>这时候就能使用强大的<strong>混合调试</strong>功能了，包括但不限于：</p>
 <ul>
@@ -157,52 +129,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://meteorix.github.io/2019/02/14/vsdebugpycpp/" data-id="cjs3ypuz60006kzxubzlzlaoa" class="article-share-link">Share</a>
+      <a data-url="https://meteorix.github.io/2019/02/13/vsdebugpycpp/" data-id="cjs3z3r150008qqxuu1qgh55u" class="article-share-link">Share</a>
       
       
-    </footer>
-  </div>
-  
-</article>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
 
-
-  
-    <article id="post-newubuntu" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/02/14/newubuntu/" class="article-date">
-  <time datetime="2019-02-14T01:34:58.016Z" itemprop="datePublished">2019-02-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="新ubuntu环境搭建"><a href="#新ubuntu环境搭建" class="headerlink" title="新ubuntu环境搭建"></a>新ubuntu环境搭建</h1><h3 id="apt"><a href="#apt" class="headerlink" title="apt"></a>apt</h3><p>替换apt源</p>
-<ul>
-<li>源列表：<a href="http://wiki.ubuntu.org.cn/" target="_blank" rel="noopener">http://wiki.ubuntu.org.cn/</a></li>
-<li>清华源：<a href="https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/" target="_blank" rel="noopener">https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/</a></li>
-</ul>
-<p>安装<code>zsh/vim/git</code></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install zsh vim git</span><br></pre></td></tr></table></figure>
-<h3 id="git"><a href="#git" class="headerlink" title="git"></a>git</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global core.editor &quot;vim&quot;</span><br><span class="line">git config --global --edit  # 设置name和email</span><br></pre></td></tr></table></figure>
-<h3 id="zsh"><a href="#zsh" class="headerlink" title="zsh"></a>zsh</h3><p>配置<strong>oh-my-zsh</strong> <a href="https://github.com/robbyrussell/oh-my-zsh" target="_blank" rel="noopener">https://github.com/robbyrussell/oh-my-zsh</a></p>
-<p>如果替换默认shell失败，先设置密码再替换<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">passwd  # 设置密码</span><br><span class="line">chsh zsh</span><br></pre></td></tr></table></figure></p>
-<p>解决zsh 有残留的问题，在 <code>~/.zshrc</code> 添加</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export LANG=en_US.UTF-8</span><br><span class="line">export LC_ALL=en_US.UTF-8</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>参考：<a href="https://github.com/sindresorhus/pure/issues/300" target="_blank" rel="noopener">https://github.com/sindresorhus/pure/issues/300</a></p>
-</blockquote>
-<h3 id="vimrc"><a href="#vimrc" class="headerlink" title="vimrc"></a>vimrc</h3><p>配置<strong>vimrc</strong> <a href="https://github.com/amix/vimrc" target="_blank" rel="noopener">https://github.com/amix/vimrc</a></p>
-<p>还要在<code>~/.vimrc</code>加上<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set nu  # 我喜欢加上行号</span><br><span class="line">set fencs=utf-8,gbk   # 这一行的作用是告诉vim，打开一个文件时，尝试utf8,gbk两种编码</span><br></pre></td></tr></table></figure></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://meteorix.github.io/2019/02/14/newubuntu/" data-id="cjs3ypuz50005kzxuxrwyx47w" class="article-share-link">Share</a>
-      
-      
     </footer>
   </div>
   
@@ -212,17 +143,27 @@
   
     <article id="post-gdbpython" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/02/14/gdbpython/" class="article-date">
-  <time datetime="2019-02-14T01:34:58.015Z" itemprop="datePublished">2019-02-14</time>
+    <a href="/2019/02/13/gdbpython/" class="article-date">
+  <time datetime="2019-02-13T15:11:32.000Z" itemprop="datePublished">2019-02-13</time>
 </a>
     
   </div>
   <div class="article-inner">
     
     
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/02/13/gdbpython/">gdb调试cpython</a>
+    </h1>
+  
+
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="gdb调试cpython"><a href="#gdb调试cpython" class="headerlink" title="gdb调试cpython"></a>gdb调试cpython</h1><p>主要参考这篇文章：</p>
+        <p>主要参考这篇文章：</p>
 <ul>
 <li><a href="https://www.podoliaka.org/2016/04/10/debugging-cpython-gdb/" target="_blank" rel="noopener">https://www.podoliaka.org/2016/04/10/debugging-cpython-gdb/</a></li>
 <li><a href="https://blog.alswl.com/2013/11/python-gdb/" target="_blank" rel="noopener">https://blog.alswl.com/2013/11/python-gdb/</a></li>
@@ -249,9 +190,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://meteorix.github.io/2019/02/14/gdbpython/" data-id="cjs3ypuz10002kzxuuupmqch5" class="article-share-link">Share</a>
+      <a data-url="https://meteorix.github.io/2019/02/13/gdbpython/" data-id="cjs3z3r0x0001qqxudzi03ae3" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+
     </footer>
   </div>
   
@@ -259,30 +202,54 @@
 
 
   
-    <article id="post-README" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-newubuntu" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/02/14/README/" class="article-date">
-  <time datetime="2019-02-14T01:34:58.014Z" itemprop="datePublished">2019-02-14</time>
+    <a href="/2019/02/13/newubuntu/" class="article-date">
+  <time datetime="2019-02-13T14:41:32.000Z" itemprop="datePublished">2019-02-13</time>
 </a>
     
   </div>
   <div class="article-inner">
     
     
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/02/13/newubuntu/">新ubuntu环境搭建</a>
+    </h1>
+  
+
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="meteorix-blog"><a href="#meteorix-blog" class="headerlink" title="meteorix-blog"></a>meteorix-blog</h1><ul>
-<li><a href="./newubuntu.md">新Ubuntu环境搭建</a></li>
-<li><a href="./vsdebugpycpp.md">vs2017混合调试py/c++</a></li>
-<li><a href="./gdbpython.md">gdb调试cpython</a></li>
+        <h3 id="apt"><a href="#apt" class="headerlink" title="apt"></a>apt</h3><p>替换apt源</p>
+<ul>
+<li>源列表：<a href="http://wiki.ubuntu.org.cn/" target="_blank" rel="noopener">http://wiki.ubuntu.org.cn/</a></li>
+<li>清华源：<a href="https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/" target="_blank" rel="noopener">https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/</a></li>
 </ul>
+<p>安装<code>zsh/vim/git</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install zsh vim git</span><br></pre></td></tr></table></figure>
+<h3 id="git"><a href="#git" class="headerlink" title="git"></a>git</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global core.editor "vim"</span><br><span class="line">git config --global --edit  # 设置name和email</span><br></pre></td></tr></table></figure>
+<h3 id="zsh"><a href="#zsh" class="headerlink" title="zsh"></a>zsh</h3><p>配置<strong>oh-my-zsh</strong> <a href="https://github.com/robbyrussell/oh-my-zsh" target="_blank" rel="noopener">https://github.com/robbyrussell/oh-my-zsh</a></p>
+<p>如果替换默认shell失败，先设置密码再替换<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">passwd  # 设置密码</span><br><span class="line">chsh zsh</span><br></pre></td></tr></table></figure></p>
+<p>解决zsh 有残留的问题，在 <code>~/.zshrc</code> 添加</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export LANG=en_US.UTF-8</span><br><span class="line">export LC_ALL=en_US.UTF-8</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>参考：<a href="https://github.com/sindresorhus/pure/issues/300" target="_blank" rel="noopener">https://github.com/sindresorhus/pure/issues/300</a></p>
+</blockquote>
+<h3 id="vimrc"><a href="#vimrc" class="headerlink" title="vimrc"></a>vimrc</h3><p>配置<strong>vimrc</strong> <a href="https://github.com/amix/vimrc" target="_blank" rel="noopener">https://github.com/amix/vimrc</a></p>
+<p>还要在<code>~/.vimrc</code>加上<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set nu  # 我喜欢加上行号</span><br><span class="line">set fencs=utf-8,gbk   # 这一行的作用是告诉vim，打开一个文件时，尝试utf8,gbk两种编码</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://meteorix.github.io/2019/02/14/README/" data-id="cjs3ypuyv0000kzxufw71zyse" class="article-share-link">Share</a>
+      <a data-url="https://meteorix.github.io/2019/02/13/newubuntu/" data-id="cjs3z3r110004qqxu2s8h9nue" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+
     </footer>
   </div>
   
@@ -363,11 +330,49 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://meteorix.github.io/2019/02/05/airtest-douyin/" data-id="cjs3ypuyz0001kzxuodkr3ywg" class="article-share-link">Share</a>
+      <a data-url="https://meteorix.github.io/2019/02/05/airtest-douyin/" data-id="cjs3z3r0t0000qqxujjx6iuuc" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
 
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-hello-world" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/02/01/hello-world/" class="article-date">
+  <time datetime="2019-02-01T04:00:00.000Z" itemprop="datePublished">2019-02-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/02/01/hello-world/">Hello World</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>2019年了，再次尝试开始写博客。</p>
+<p>考虑了几个地方，不是广告太多，就是嫌太水，于是回归到<code>github pages + hexo</code>。seo的问题以后再说吧，先写给自己看。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://meteorix.github.io/2019/02/01/hello-world/" data-id="cjs3z3r100003qqxux5w070ln" class="article-share-link">Share</a>
+      
+      
     </footer>
   </div>
   
@@ -484,7 +489,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://meteorix.github.io/2018/06/20/py-patterns/" data-id="cjs3ypuz70008kzxuhsyvrz7u" class="article-share-link">Share</a>
+      <a data-url="https://meteorix.github.io/2018/06/20/py-patterns/" data-id="cjs3z3r120005qqxuew935ys6" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
@@ -541,23 +546,23 @@
       <ul>
         
           <li>
-            <a href="/2019/02/14/hello-world/">Hello World</a>
+            <a href="/2019/02/13/vsdebugpycpp/">vs2017混合调试py/c++</a>
           </li>
         
           <li>
-            <a href="/2019/02/14/vsdebugpycpp/">(no title)</a>
+            <a href="/2019/02/13/gdbpython/">gdb调试cpython</a>
           </li>
         
           <li>
-            <a href="/2019/02/14/newubuntu/">(no title)</a>
+            <a href="/2019/02/13/newubuntu/">新ubuntu环境搭建</a>
           </li>
         
           <li>
-            <a href="/2019/02/14/gdbpython/">(no title)</a>
+            <a href="/2019/02/05/airtest-douyin/">Airtest刷刷抖音</a>
           </li>
         
           <li>
-            <a href="/2019/02/14/README/">(no title)</a>
+            <a href="/2019/02/01/hello-world/">Hello World</a>
           </li>
         
       </ul>
