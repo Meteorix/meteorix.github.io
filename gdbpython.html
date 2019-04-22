@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Meteorix&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="gdb调试cpython主要参考这篇文章：  https://www.podoliaka.org/2016/04/10/debugging-cpython-gdb/ https://blog.alswl.com/2013/11/python-gdb/  同时debug c栈和py栈在调试脚本卡死的时候特别有用，如下图  安装python-dbg1sudo apt-get install gdb p">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Meteorix&#39;s Blog">
+<meta property="og:url" content="https://meteorix.github.io/gdbpython.html">
+<meta property="og:site_name" content="Meteorix&#39;s Blog">
+<meta property="og:description" content="gdb调试cpython主要参考这篇文章：  https://www.podoliaka.org/2016/04/10/debugging-cpython-gdb/ https://blog.alswl.com/2013/11/python-gdb/  同时debug c栈和py栈在调试脚本卡死的时候特别有用，如下图  安装python-dbg1sudo apt-get install gdb p">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://meteorix.github.io/gdbpython.img/bt.png">
+<meta property="og:updated_time" content="2019-04-22T06:27:21.486Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Meteorix&#39;s Blog">
+<meta name="twitter:description" content="gdb调试cpython主要参考这篇文章：  https://www.podoliaka.org/2016/04/10/debugging-cpython-gdb/ https://blog.alswl.com/2013/11/python-gdb/  同时debug c栈和py栈在调试脚本卡死的时候特别有用，如下图  安装python-dbg1sudo apt-get install gdb p">
+<meta name="twitter:image" content="https://meteorix.github.io/gdbpython.img/bt.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Meteorix&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Meteorix&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://meteorix.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="page-" class="article article-type-page" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/gdbpython.html" class="article-date">
+  <time datetime="2019-04-22T06:27:21.486Z" itemprop="datePublished">2019-04-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="gdb调试cpython"><a href="#gdb调试cpython" class="headerlink" title="gdb调试cpython"></a>gdb调试cpython</h1><p>主要参考这篇文章：</p>
+<ul>
+<li><a href="https://www.podoliaka.org/2016/04/10/debugging-cpython-gdb/" target="_blank" rel="noopener">https://www.podoliaka.org/2016/04/10/debugging-cpython-gdb/</a></li>
+<li><a href="https://blog.alswl.com/2013/11/python-gdb/" target="_blank" rel="noopener">https://blog.alswl.com/2013/11/python-gdb/</a></li>
+</ul>
+<h2 id="同时debug-c栈和py栈"><a href="#同时debug-c栈和py栈" class="headerlink" title="同时debug c栈和py栈"></a>同时debug c栈和py栈</h2><p>在调试脚本卡死的时候特别有用，如下图</p>
+<p><img src="./gdbpython.img/bt.png" alt="image"></p>
+<h2 id="安装python-dbg"><a href="#安装python-dbg" class="headerlink" title="安装python-dbg"></a>安装python-dbg</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install gdb python-dbg</span><br></pre></td></tr></table></figure>
+<p><code>python-dbg</code>包含symbol和py-bt</p>
+<p>会自动把libpython.py装到gdb的auto-load目录，并且保证后面的子目录跟python的目录地址一样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ which python2.7</span><br><span class="line">/usr/bin/python2.7</span><br><span class="line">➜  ~ ls /usr/share/gdb/auto-load/usr/bin/          </span><br><span class="line">python2.7-dbg-gdb.py  python2.7-gdb.py</span><br></pre></td></tr></table></figure>
+<h3 id="其他版本python安装gdb-dbg"><a href="#其他版本python安装gdb-dbg" class="headerlink" title="其他版本python安装gdb dbg"></a>其他版本python安装gdb dbg</h3><p>由于自己在服务器上安装了多个版本的python，比如自己用源码编译的py3.7</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ which python3.7</span><br><span class="line">/usr/local/bin/python3.7</span><br></pre></td></tr></table></figure>
+<p>然后可以在python的源码里面找到<code>Toos/gdb/libpython.py</code></p>
+<blockquote>
+<p><a href="https://github.com/python/cpython/tree/3.7/Tools/gdb" target="_blank" rel="noopener">https://github.com/python/cpython/tree/3.7/Tools/gdb</a></p>
+</blockquote>
+<p>按照上面的目录规则cp到gdb的auto-load，保证调试python3.7进程的时候能找到</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ ls /usr/share/gdb/auto-load/usr/local/bin/          </span><br><span class="line">python3.7-dbg-gdb.py  python3.7-gdb.py</span><br></pre></td></tr></table></figure>
+<h3 id="attach到python进程"><a href="#attach到python进程" class="headerlink" title="attach到python进程"></a>attach到python进程</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ps -x | grep python</span><br><span class="line">gdb -p &lt;pid&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">bt    # 当前C调用栈</span><br><span class="line">py-bt  # 当前Py调用栈</span><br><span class="line">py-list  # 当前py代码位置</span><br><span class="line">info thread   # 线程信息</span><br><span class="line">thread &lt;id&gt;   # 切换到某个线程</span><br><span class="line">thread apply all py-list  # 查看所有线程的py代码位置</span><br><span class="line">ctrl-c  # 中断</span><br></pre></td></tr></table></figure>
+<p>py-bt如果遇到中文编码问题<br>export LC_CTYPE=C.UTF-8</p>
+<h3 id="配合gdb-dashboard，更方便一点"><a href="#配合gdb-dashboard，更方便一点" class="headerlink" title="配合gdb dashboard，更方便一点"></a>配合gdb dashboard，更方便一点</h3><p><a href="https://github.com/cyrus-and/gdb-dashboard" target="_blank" rel="noopener">https://github.com/cyrus-and/gdb-dashboard</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://meteorix.github.io/gdbpython.html" data-id="cjurzg45s0000cfxuzqcgkrws" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+
+  
+    
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 meteorix<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
