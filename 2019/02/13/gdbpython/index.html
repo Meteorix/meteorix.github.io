@@ -7,19 +7,19 @@
   
   <title>gdb调试cpython | Meteorix&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="主要参考这篇文章：  https://www.podoliaka.org/2016/04/10/debugging-cpython-gdb/ https://blog.alswl.com/2013/11/python-gdb/  同时debug c栈和py栈在调试脚本卡死的时候特别有用，如下图  安装python-dbg1sudo apt-get install gdb python-dbg py">
+  <meta name="description" content="gdb调试cpython主要参考这篇文章：  https://www.podoliaka.org/2016/04/10/debugging-cpython-gdb/ https://blog.alswl.com/2013/11/python-gdb/  同时debug c栈和py栈在调试脚本卡死的时候特别有用，如下图  安装python-dbg1sudo apt-get install gdb p">
 <meta name="keywords" content="Python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="gdb调试cpython">
 <meta property="og:url" content="https://meteorix.github.io/2019/02/13/gdbpython/index.html">
 <meta property="og:site_name" content="Meteorix&#39;s Blog">
-<meta property="og:description" content="主要参考这篇文章：  https://www.podoliaka.org/2016/04/10/debugging-cpython-gdb/ https://blog.alswl.com/2013/11/python-gdb/  同时debug c栈和py栈在调试脚本卡死的时候特别有用，如下图  安装python-dbg1sudo apt-get install gdb python-dbg py">
+<meta property="og:description" content="gdb调试cpython主要参考这篇文章：  https://www.podoliaka.org/2016/04/10/debugging-cpython-gdb/ https://blog.alswl.com/2013/11/python-gdb/  同时debug c栈和py栈在调试脚本卡死的时候特别有用，如下图  安装python-dbg1sudo apt-get install gdb p">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://meteorix.github.io/images/gdbpython/bt.png">
-<meta property="og:updated_time" content="2019-02-14T01:51:23.249Z">
+<meta property="og:updated_time" content="2019-04-22T06:45:47.020Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="gdb调试cpython">
-<meta name="twitter:description" content="主要参考这篇文章：  https://www.podoliaka.org/2016/04/10/debugging-cpython-gdb/ https://blog.alswl.com/2013/11/python-gdb/  同时debug c栈和py栈在调试脚本卡死的时候特别有用，如下图  安装python-dbg1sudo apt-get install gdb python-dbg py">
+<meta name="twitter:description" content="gdb调试cpython主要参考这篇文章：  https://www.podoliaka.org/2016/04/10/debugging-cpython-gdb/ https://blog.alswl.com/2013/11/python-gdb/  同时debug c栈和py栈在调试脚本卡死的时候特别有用，如下图  安装python-dbg1sudo apt-get install gdb p">
 <meta name="twitter:image" content="https://meteorix.github.io/images/gdbpython/bt.png">
   
     <link rel="alternate" href="/atom.xml" title="Meteorix&#39;s Blog" type="application/atom+xml">
@@ -89,7 +89,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>主要参考这篇文章：</p>
+        <h1 id="gdb调试cpython"><a href="#gdb调试cpython" class="headerlink" title="gdb调试cpython"></a>gdb调试cpython</h1><p>主要参考这篇文章：</p>
 <ul>
 <li><a href="https://www.podoliaka.org/2016/04/10/debugging-cpython-gdb/" target="_blank" rel="noopener">https://www.podoliaka.org/2016/04/10/debugging-cpython-gdb/</a></li>
 <li><a href="https://blog.alswl.com/2013/11/python-gdb/" target="_blank" rel="noopener">https://blog.alswl.com/2013/11/python-gdb/</a></li>
@@ -116,7 +116,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://meteorix.github.io/2019/02/13/gdbpython/" data-id="cjs3z3r0x0001qqxudzi03ae3" class="article-share-link">Share</a>
+      <a data-url="https://meteorix.github.io/2019/02/13/gdbpython/" data-id="cjurzsgmb0000s7xu9vdnccz2" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
@@ -158,7 +158,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Airtest/">Airtest</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
     </div>
   </div>
 
@@ -168,7 +168,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Python/" style="font-size: 10px;">Python</a>
+      <a href="/tags/Airtest/" style="font-size: 10px;">Airtest</a> <a href="/tags/Python/" style="font-size: 20px;">Python</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
     </div>
   </div>
 

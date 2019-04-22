@@ -7,23 +7,23 @@
   
   <title>vs2017混合调试py/c++ | Meteorix&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="python卡死了怎么办?一般的python程序卡死，可以用pycharm debug。但是有时候是python和c/c++库混合开发，比如pyqt或者boost python程序卡死，就非常难查。以前都是二分法注释代码查找问题，异常低效。 于是我尝试了vs2017的新功能：python &amp;amp; c++ 混合调试 Debug Python and C++ together vs2017 pyt">
+  <meta name="description" content="vs2017混合调试py/c++python卡死了怎么办?一般的python程序卡死，可以用pycharm debug。但是有时候是python和c/c++库混合开发，比如pyqt或者boost python程序卡死，就非常难查。以前都是二分法注释代码查找问题，异常低效。 于是我尝试了vs2017的新功能：python &amp;amp; c++ 混合调试 Debug Python and C++ tog">
 <meta name="keywords" content="Python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="vs2017混合调试py&#x2F;c++">
 <meta property="og:url" content="https://meteorix.github.io/2019/02/13/vsdebugpycpp/index.html">
 <meta property="og:site_name" content="Meteorix&#39;s Blog">
-<meta property="og:description" content="python卡死了怎么办?一般的python程序卡死，可以用pycharm debug。但是有时候是python和c/c++库混合开发，比如pyqt或者boost python程序卡死，就非常难查。以前都是二分法注释代码查找问题，异常低效。 于是我尝试了vs2017的新功能：python &amp;amp; c++ 混合调试 Debug Python and C++ together vs2017 pyt">
+<meta property="og:description" content="vs2017混合调试py/c++python卡死了怎么办?一般的python程序卡死，可以用pycharm debug。但是有时候是python和c/c++库混合开发，比如pyqt或者boost python程序卡死，就非常难查。以前都是二分法注释代码查找问题，异常低效。 于是我尝试了vs2017的新功能：python &amp;amp; c++ 混合调试 Debug Python and C++ tog">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://meteorix.github.io/images/vsdebugpycpp/5c3d9b205e60273aadf4650714DcRPJX.png">
 <meta property="og:image" content="https://meteorix.github.io/images/vsdebugpycpp/5c3d9dbcaa49f15c3726191dzKYsU5Qw.png">
 <meta property="og:image" content="https://meteorix.github.io/images/vsdebugpycpp/5c3d9e54a7f2529830bb770bjqP16HQy.png">
 <meta property="og:image" content="https://meteorix.github.io/images/vsdebugpycpp/5c3da03a96dee435e6604c4aVmHaq5uC.png">
 <meta property="og:image" content="https://meteorix.github.io/images/vsdebugpycpp/5c3da1cb7f9d2a99198674256wRjQZ2J.png">
-<meta property="og:updated_time" content="2019-02-14T01:51:19.217Z">
+<meta property="og:updated_time" content="2019-04-22T06:48:36.922Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="vs2017混合调试py&#x2F;c++">
-<meta name="twitter:description" content="python卡死了怎么办?一般的python程序卡死，可以用pycharm debug。但是有时候是python和c/c++库混合开发，比如pyqt或者boost python程序卡死，就非常难查。以前都是二分法注释代码查找问题，异常低效。 于是我尝试了vs2017的新功能：python &amp;amp; c++ 混合调试 Debug Python and C++ together vs2017 pyt">
+<meta name="twitter:description" content="vs2017混合调试py/c++python卡死了怎么办?一般的python程序卡死，可以用pycharm debug。但是有时候是python和c/c++库混合开发，比如pyqt或者boost python程序卡死，就非常难查。以前都是二分法注释代码查找问题，异常低效。 于是我尝试了vs2017的新功能：python &amp;amp; c++ 混合调试 Debug Python and C++ tog">
 <meta name="twitter:image" content="https://meteorix.github.io/images/vsdebugpycpp/5c3d9b205e60273aadf4650714DcRPJX.png">
   
     <link rel="alternate" href="/atom.xml" title="Meteorix&#39;s Blog" type="application/atom+xml">
@@ -93,7 +93,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="python卡死了怎么办"><a href="#python卡死了怎么办" class="headerlink" title="python卡死了怎么办?"></a>python卡死了怎么办?</h2><p>一般的python程序卡死，可以用pycharm debug。但是有时候是python和c/c++库混合开发，比如pyqt或者boost python程序卡死，就非常难查。以前都是二分法注释代码查找问题，异常低效。</p>
+        <h1 id="vs2017混合调试py-c"><a href="#vs2017混合调试py-c" class="headerlink" title="vs2017混合调试py/c++"></a>vs2017混合调试py/c++</h1><h2 id="python卡死了怎么办"><a href="#python卡死了怎么办" class="headerlink" title="python卡死了怎么办?"></a>python卡死了怎么办?</h2><p>一般的python程序卡死，可以用pycharm debug。但是有时候是python和c/c++库混合开发，比如pyqt或者boost python程序卡死，就非常难查。以前都是二分法注释代码查找问题，异常低效。</p>
 <p>于是我尝试了vs2017的新功能：python &amp; c++ 混合调试 <a href="https://docs.microsoft.com/en-us/visualstudio/python/debugging-mixed-mode-c-cpp-python-in-visual-studio?view=vs-2017" target="_blank" rel="noopener">Debug Python and C++ together</a></p>
 <h2 id="vs2017-python"><a href="#vs2017-python" class="headerlink" title="vs2017 python"></a>vs2017 python</h2><p>vs一直被称为宇宙最强IDE，貌似python支持是vs2017新加的功能。相比pycharm之类的python编辑器，vs2017最大的优势就是在python和native c/c++代码的混合调试。包括：</p>
 <ul>
@@ -138,7 +138,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://meteorix.github.io/2019/02/13/vsdebugpycpp/" data-id="cjs3z3r150008qqxuu1qgh55u" class="article-share-link">Share</a>
+      <a data-url="https://meteorix.github.io/2019/02/13/vsdebugpycpp/" data-id="cjurzsgmj0002s7xumxyidmp9" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
@@ -171,7 +171,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Airtest/">Airtest</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
     </div>
   </div>
 
@@ -181,7 +181,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Python/" style="font-size: 10px;">Python</a>
+      <a href="/tags/Airtest/" style="font-size: 10px;">Airtest</a> <a href="/tags/Python/" style="font-size: 20px;">Python</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
     </div>
   </div>
 

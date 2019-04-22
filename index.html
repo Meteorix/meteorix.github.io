@@ -84,7 +84,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="python卡死了怎么办"><a href="#python卡死了怎么办" class="headerlink" title="python卡死了怎么办?"></a>python卡死了怎么办?</h2><p>一般的python程序卡死，可以用pycharm debug。但是有时候是python和c/c++库混合开发，比如pyqt或者boost python程序卡死，就非常难查。以前都是二分法注释代码查找问题，异常低效。</p>
+        <h1 id="vs2017混合调试py-c"><a href="#vs2017混合调试py-c" class="headerlink" title="vs2017混合调试py/c++"></a>vs2017混合调试py/c++</h1><h2 id="python卡死了怎么办"><a href="#python卡死了怎么办" class="headerlink" title="python卡死了怎么办?"></a>python卡死了怎么办?</h2><p>一般的python程序卡死，可以用pycharm debug。但是有时候是python和c/c++库混合开发，比如pyqt或者boost python程序卡死，就非常难查。以前都是二分法注释代码查找问题，异常低效。</p>
 <p>于是我尝试了vs2017的新功能：python &amp; c++ 混合调试 <a href="https://docs.microsoft.com/en-us/visualstudio/python/debugging-mixed-mode-c-cpp-python-in-visual-studio?view=vs-2017" target="_blank" rel="noopener">Debug Python and C++ together</a></p>
 <h2 id="vs2017-python"><a href="#vs2017-python" class="headerlink" title="vs2017 python"></a>vs2017 python</h2><p>vs一直被称为宇宙最强IDE，貌似python支持是vs2017新加的功能。相比pycharm之类的python编辑器，vs2017最大的优势就是在python和native c/c++代码的混合调试。包括：</p>
 <ul>
@@ -129,7 +129,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://meteorix.github.io/2019/02/13/vsdebugpycpp/" data-id="cjs3z3r150008qqxuu1qgh55u" class="article-share-link">Share</a>
+      <a data-url="https://meteorix.github.io/2019/02/13/vsdebugpycpp/" data-id="cjurzsgmj0002s7xumxyidmp9" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
@@ -163,7 +163,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>主要参考这篇文章：</p>
+        <h1 id="gdb调试cpython"><a href="#gdb调试cpython" class="headerlink" title="gdb调试cpython"></a>gdb调试cpython</h1><p>主要参考这篇文章：</p>
 <ul>
 <li><a href="https://www.podoliaka.org/2016/04/10/debugging-cpython-gdb/" target="_blank" rel="noopener">https://www.podoliaka.org/2016/04/10/debugging-cpython-gdb/</a></li>
 <li><a href="https://blog.alswl.com/2013/11/python-gdb/" target="_blank" rel="noopener">https://blog.alswl.com/2013/11/python-gdb/</a></li>
@@ -190,7 +190,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://meteorix.github.io/2019/02/13/gdbpython/" data-id="cjs3z3r0x0001qqxudzi03ae3" class="article-share-link">Share</a>
+      <a data-url="https://meteorix.github.io/2019/02/13/gdbpython/" data-id="cjurzsgmb0000s7xu9vdnccz2" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
@@ -224,28 +224,30 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="apt"><a href="#apt" class="headerlink" title="apt"></a>apt</h3><p>替换apt源</p>
+        <h1 id="新ubuntu环境搭建"><a href="#新ubuntu环境搭建" class="headerlink" title="新ubuntu环境搭建"></a>新ubuntu环境搭建</h1><h3 id="apt"><a href="#apt" class="headerlink" title="apt"></a>apt</h3><p>替换apt源</p>
 <ul>
 <li>源列表：<a href="http://wiki.ubuntu.org.cn/" target="_blank" rel="noopener">http://wiki.ubuntu.org.cn/</a></li>
 <li>清华源：<a href="https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/" target="_blank" rel="noopener">https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/</a></li>
 </ul>
 <p>安装<code>zsh/vim/git</code></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install zsh vim git</span><br></pre></td></tr></table></figure>
-<h3 id="git"><a href="#git" class="headerlink" title="git"></a>git</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global core.editor "vim"</span><br><span class="line">git config --global --edit  # 设置name和email</span><br></pre></td></tr></table></figure>
+<h3 id="git"><a href="#git" class="headerlink" title="git"></a>git</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global core.editor &quot;vim&quot;</span><br><span class="line">git config --global --edit  # 设置name和email</span><br></pre></td></tr></table></figure>
 <h3 id="zsh"><a href="#zsh" class="headerlink" title="zsh"></a>zsh</h3><p>配置<strong>oh-my-zsh</strong> <a href="https://github.com/robbyrussell/oh-my-zsh" target="_blank" rel="noopener">https://github.com/robbyrussell/oh-my-zsh</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"</span><br></pre></td></tr></table></figure>
 <p>如果替换默认shell失败，先设置密码再替换<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">passwd  # 设置密码</span><br><span class="line">chsh zsh</span><br></pre></td></tr></table></figure></p>
 <p>解决zsh 有残留的问题，在 <code>~/.zshrc</code> 添加</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export LANG=en_US.UTF-8</span><br><span class="line">export LC_ALL=en_US.UTF-8</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export LANG=en_US.UTF-8</span><br><span class="line">export LC_ALL=en_US.UTF-8</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>参考：<a href="https://github.com/sindresorhus/pure/issues/300" target="_blank" rel="noopener">https://github.com/sindresorhus/pure/issues/300</a></p>
 </blockquote>
-<h3 id="vimrc"><a href="#vimrc" class="headerlink" title="vimrc"></a>vimrc</h3><p>配置<strong>vimrc</strong> <a href="https://github.com/amix/vimrc" target="_blank" rel="noopener">https://github.com/amix/vimrc</a></p>
+<p>解决tabname闪烁的问题，在<code>~/.zshrc</code>disable掉autotitle<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DISABLE_AUTO_TITLE=&quot;true&quot;</span><br></pre></td></tr></table></figure></p>
+<h3 id="vimrc"><a href="#vimrc" class="headerlink" title="vimrc"></a>vimrc</h3><p>配置<strong>vimrc</strong> <a href="https://github.com/amix/vimrc" target="_blank" rel="noopener">https://github.com/amix/vimrc</a><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime</span><br><span class="line">sh ~/.vim_runtime/install_basic_vimrc.sh</span><br></pre></td></tr></table></figure></p>
 <p>还要在<code>~/.vimrc</code>加上<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set nu  # 我喜欢加上行号</span><br><span class="line">set fencs=utf-8,gbk   # 这一行的作用是告诉vim，打开一个文件时，尝试utf8,gbk两种编码</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://meteorix.github.io/2019/02/13/newubuntu/" data-id="cjs3z3r110004qqxu2s8h9nue" class="article-share-link">Share</a>
+      <a data-url="https://meteorix.github.io/2019/02/13/newubuntu/" data-id="cjurzsgmg0001s7xu1dpuno32" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
@@ -279,24 +281,24 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>用<a href="https://github.com/AirtestProject/Airtest" target="_blank" rel="noopener">Airtest</a>做点有意思的事情，先来刷个抖音？</p>
+        <h1 id="Airtest刷刷抖音"><a href="#Airtest刷刷抖音" class="headerlink" title="Airtest刷刷抖音"></a>Airtest刷刷抖音</h1><p>用<a href="https://github.com/AirtestProject/Airtest" target="_blank" rel="noopener">Airtest</a>做点有意思的事情，先来刷个抖音？</p>
 <p><a href="https://github.com/Meteorix/airtest-douyin" target="_blank" rel="noopener">github仓库 airtest-douyin</a></p>
-<p><img src="/images/ide01.png" alt="ide01"></p>
+<p><img src="/images/airtest-douyin/ide01.png" alt="ide01"></p>
 <h2 id="Get-Started"><a href="#Get-Started" class="headerlink" title="Get Started"></a>Get Started</h2><h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><p>手边没有android手机，iOS又懒得搭<a href="https://github.com/AirtestProject/iOS-Tagent" target="_blank" rel="noopener">ios-tagent</a>的环境，于是采用最偷懒的方式：</p>
 <ul>
 <li><a href="https://www.yeshen.com/" target="_blank" rel="noopener">夜神模拟器</a>（可用安卓机代替）</li>
 <li><a href="http://airtest.netease.com/" target="_blank" rel="noopener">AirtestIDE</a></li>
 </ul>
 <p>夜神模拟器装上抖音，用起来跟手机上一样舒服。看了下模拟器占内存200m和CPU 12%左右，还不错。夜神自带了一个多开器，后面分布式刷抖音再玩玩</p>
-<p><img src="/images/nox.png" alt="nox"></p>
+<p><img src="/images/airtest-douyin/nox.png" alt="nox"></p>
 <h3 id="录制第一版代码"><a href="#录制第一版代码" class="headerlink" title="录制第一版代码"></a>录制第一版代码</h3><p>打开AirtestIDE，按照<a href="http://airtest.netease.com/docs/cn/2_device_connection/3_emulator_connection.html#id2" target="_blank" rel="noopener">文档</a>连接好模拟器</p>
-<p><img src="/images/ide01.png" alt="ide01"></p>
+<p><img src="/images/airtest-douyin/ide01.png" alt="ide01"></p>
 <p>为了每次能用代码自动打开抖音，先用右上角的安卓助手查看一下抖音的package id</p>
-<p><img src="/images/assistant.png" alt="assistant"></p>
+<p><img src="/images/airtest-douyin/assistant.png" alt="assistant"></p>
 <p>手动加上代码</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">APP = <span class="string">"com.ss.android.ugc.aweme"</span></span><br><span class="line"></span><br><span class="line">stop_app(APP)</span><br><span class="line">start_app(APP)</span><br></pre></td></tr></table></figure>
 <p>然后将AirtestIDE调到安卓App的录制模式，进行一些操作，对应的代码就录制下来了</p>
-<p><img src="/images/ide02.png" alt="ide02"></p>
+<p><img src="/images/airtest-douyin/ide02.png" alt="ide02"></p>
 <h3 id="稍微调整代码"><a href="#稍微调整代码" class="headerlink" title="稍微调整代码"></a>稍微调整代码</h3><p>自动录制的代码不太好，稍微调整一下</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">poco(boundsInParent=<span class="string">"[0.03194444444444444, 0.02734375]"</span>).click()</span><br></pre></td></tr></table></figure>
 <p>直接改成通过<code>text</code>来识别按钮</p>
@@ -310,11 +312,11 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">poco(<span class="string">"com.ss.android.ugc.aweme:id/al8"</span>).click()</span><br></pre></td></tr></table></figure>
 <p>原来抖音需要登录之后才能点赞，先手动登录吧，代码里面留个<code>TODO</code></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> poco(text=<span class="string">"输入手机号码"</span>).exists():</span><br><span class="line">    <span class="comment"># <span class="doctag">TODO:</span> 自动登录</span></span><br><span class="line">    print(<span class="string">"先手动登录一下吧~"</span>)</span><br><span class="line">    <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
-<p><img src="/images/ide03.png" alt="ide03"></p>
+<p><img src="/images/airtest-douyin/ide03.png" alt="ide03"></p>
 <p>然后我们截个图留念</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">snapshot()</span><br></pre></td></tr></table></figure>
 <p>再运行一下，效果非常好</p>
-<p><img src="/images/snapshot.png" alt="snapshot"></p>
+<p><img src="/images/airtest-douyin/snapshot.png" alt="snapshot"></p>
 <blockquote>
 <p>tips: 点击IDE工具栏的<code>log</code>按钮，你还能看到每步操作的报告。</p>
 </blockquote>
@@ -330,10 +332,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://meteorix.github.io/2019/02/05/airtest-douyin/" data-id="cjs3z3r0t0000qqxujjx6iuuc" class="article-share-link">Share</a>
+      <a data-url="https://meteorix.github.io/2019/02/05/airtest-douyin/" data-id="cjus02qbo0003tlxuvz46ponx" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Airtest/">Airtest</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
 
     </footer>
   </div>
@@ -370,9 +372,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://meteorix.github.io/2019/02/01/hello-world/" data-id="cjs3z3r100003qqxux5w070ln" class="article-share-link">Share</a>
+      <a data-url="https://meteorix.github.io/2019/02/01/hello-world/" data-id="cjus02gl90002tlxu7emzpkzz" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
+
     </footer>
   </div>
   
@@ -489,7 +493,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://meteorix.github.io/2018/06/20/py-patterns/" data-id="cjs3z3r120005qqxuew935ys6" class="article-share-link">Share</a>
+      <a data-url="https://meteorix.github.io/2018/06/20/py-patterns/" data-id="cjus033hl0005tlxut0o0a2gz" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
@@ -514,7 +518,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Airtest/">Airtest</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
     </div>
   </div>
 
@@ -524,7 +528,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Python/" style="font-size: 10px;">Python</a>
+      <a href="/tags/Airtest/" style="font-size: 10px;">Airtest</a> <a href="/tags/Python/" style="font-size: 20px;">Python</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
     </div>
   </div>
 

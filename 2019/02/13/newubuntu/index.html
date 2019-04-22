@@ -7,18 +7,18 @@
   
   <title>新ubuntu环境搭建 | Meteorix&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="apt替换apt源  源列表：http://wiki.ubuntu.org.cn/ 清华源：https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/  安装zsh/vim/git 12sudo apt-get updatesudo apt-get install zsh vim git git12git config --global core.editor">
+  <meta name="description" content="新ubuntu环境搭建apt替换apt源  源列表：http://wiki.ubuntu.org.cn/ 清华源：https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/  安装zsh/vim/git 12sudo apt-get updatesudo apt-get install zsh vim git git12git config --global">
 <meta name="keywords" content="Python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="新ubuntu环境搭建">
 <meta property="og:url" content="https://meteorix.github.io/2019/02/13/newubuntu/index.html">
 <meta property="og:site_name" content="Meteorix&#39;s Blog">
-<meta property="og:description" content="apt替换apt源  源列表：http://wiki.ubuntu.org.cn/ 清华源：https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/  安装zsh/vim/git 12sudo apt-get updatesudo apt-get install zsh vim git git12git config --global core.editor">
+<meta property="og:description" content="新ubuntu环境搭建apt替换apt源  源列表：http://wiki.ubuntu.org.cn/ 清华源：https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/  安装zsh/vim/git 12sudo apt-get updatesudo apt-get install zsh vim git git12git config --global">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-02-14T01:51:55.960Z">
+<meta property="og:updated_time" content="2019-04-22T06:48:07.821Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="新ubuntu环境搭建">
-<meta name="twitter:description" content="apt替换apt源  源列表：http://wiki.ubuntu.org.cn/ 清华源：https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/  安装zsh/vim/git 12sudo apt-get updatesudo apt-get install zsh vim git git12git config --global core.editor">
+<meta name="twitter:description" content="新ubuntu环境搭建apt替换apt源  源列表：http://wiki.ubuntu.org.cn/ 清华源：https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/  安装zsh/vim/git 12sudo apt-get updatesudo apt-get install zsh vim git git12git config --global">
   
     <link rel="alternate" href="/atom.xml" title="Meteorix&#39;s Blog" type="application/atom+xml">
   
@@ -87,28 +87,30 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="apt"><a href="#apt" class="headerlink" title="apt"></a>apt</h3><p>替换apt源</p>
+        <h1 id="新ubuntu环境搭建"><a href="#新ubuntu环境搭建" class="headerlink" title="新ubuntu环境搭建"></a>新ubuntu环境搭建</h1><h3 id="apt"><a href="#apt" class="headerlink" title="apt"></a>apt</h3><p>替换apt源</p>
 <ul>
 <li>源列表：<a href="http://wiki.ubuntu.org.cn/" target="_blank" rel="noopener">http://wiki.ubuntu.org.cn/</a></li>
 <li>清华源：<a href="https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/" target="_blank" rel="noopener">https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/</a></li>
 </ul>
 <p>安装<code>zsh/vim/git</code></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install zsh vim git</span><br></pre></td></tr></table></figure>
-<h3 id="git"><a href="#git" class="headerlink" title="git"></a>git</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global core.editor "vim"</span><br><span class="line">git config --global --edit  # 设置name和email</span><br></pre></td></tr></table></figure>
+<h3 id="git"><a href="#git" class="headerlink" title="git"></a>git</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global core.editor &quot;vim&quot;</span><br><span class="line">git config --global --edit  # 设置name和email</span><br></pre></td></tr></table></figure>
 <h3 id="zsh"><a href="#zsh" class="headerlink" title="zsh"></a>zsh</h3><p>配置<strong>oh-my-zsh</strong> <a href="https://github.com/robbyrussell/oh-my-zsh" target="_blank" rel="noopener">https://github.com/robbyrussell/oh-my-zsh</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"</span><br></pre></td></tr></table></figure>
 <p>如果替换默认shell失败，先设置密码再替换<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">passwd  # 设置密码</span><br><span class="line">chsh zsh</span><br></pre></td></tr></table></figure></p>
 <p>解决zsh 有残留的问题，在 <code>~/.zshrc</code> 添加</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export LANG=en_US.UTF-8</span><br><span class="line">export LC_ALL=en_US.UTF-8</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export LANG=en_US.UTF-8</span><br><span class="line">export LC_ALL=en_US.UTF-8</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>参考：<a href="https://github.com/sindresorhus/pure/issues/300" target="_blank" rel="noopener">https://github.com/sindresorhus/pure/issues/300</a></p>
 </blockquote>
-<h3 id="vimrc"><a href="#vimrc" class="headerlink" title="vimrc"></a>vimrc</h3><p>配置<strong>vimrc</strong> <a href="https://github.com/amix/vimrc" target="_blank" rel="noopener">https://github.com/amix/vimrc</a></p>
+<p>解决tabname闪烁的问题，在<code>~/.zshrc</code>disable掉autotitle<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DISABLE_AUTO_TITLE=&quot;true&quot;</span><br></pre></td></tr></table></figure></p>
+<h3 id="vimrc"><a href="#vimrc" class="headerlink" title="vimrc"></a>vimrc</h3><p>配置<strong>vimrc</strong> <a href="https://github.com/amix/vimrc" target="_blank" rel="noopener">https://github.com/amix/vimrc</a><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime</span><br><span class="line">sh ~/.vim_runtime/install_basic_vimrc.sh</span><br></pre></td></tr></table></figure></p>
 <p>还要在<code>~/.vimrc</code>加上<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set nu  # 我喜欢加上行号</span><br><span class="line">set fencs=utf-8,gbk   # 这一行的作用是告诉vim，打开一个文件时，尝试utf8,gbk两种编码</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://meteorix.github.io/2019/02/13/newubuntu/" data-id="cjs3z3r110004qqxu2s8h9nue" class="article-share-link">Share</a>
+      <a data-url="https://meteorix.github.io/2019/02/13/newubuntu/" data-id="cjurzsgmg0001s7xu1dpuno32" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
@@ -150,7 +152,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Airtest/">Airtest</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
     </div>
   </div>
 
@@ -160,7 +162,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Python/" style="font-size: 10px;">Python</a>
+      <a href="/tags/Airtest/" style="font-size: 10px;">Airtest</a> <a href="/tags/Python/" style="font-size: 20px;">Python</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
     </div>
   </div>
 
