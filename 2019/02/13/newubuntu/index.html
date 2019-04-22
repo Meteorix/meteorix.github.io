@@ -14,7 +14,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="">
+<html class="theme-next pisces use-motion" lang="">
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -70,9 +70,9 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Muse',
+    scheme: 'Pisces',
     version: '7.1.0',
-    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    sidebar: {"position":"left","display":"always","offset":12,"onmobile":false,"dimmer":false},
     back2top: true,
     back2top_sidebar: false,
     fancybox: false,
@@ -104,7 +104,7 @@
 <meta property="og:site_name" content="Meteorix&#39;s Blog">
 <meta property="og:description" content="新ubuntu环境搭建apt替换apt源  源列表：http://wiki.ubuntu.org.cn/ 清华源：https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/  安装zsh/vim/git 12sudo apt-get updatesudo apt-get install zsh vim git git12git config --global">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-04-22T06:48:07.821Z">
+<meta property="og:updated_time" content="2019-04-22T15:47:40.535Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="新ubuntu环境搭建">
 <meta name="twitter:description" content="新ubuntu环境搭建apt替换apt源  源列表：http://wiki.ubuntu.org.cn/ 清华源：https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/  安装zsh/vim/git 12sudo apt-get updatesudo apt-get install zsh vim git git12git config --global">
@@ -130,6 +130,17 @@
 
 
 
+
+  <script async src="//www.googletagmanager.com/gtag/js?id=UA-138766747-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-138766747-1');
+    }
+  </script>
 
 
 
@@ -241,14 +252,28 @@
     <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
 
   </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
 
       
       
     </ul>
   
-
-  
-    
 
   
 
@@ -270,6 +295,9 @@
     <main id="main" class="main">
       <div class="main-inner">
         <div class="content-wrap">
+          
+            
+
           
           <div id="content" class="content">
             
@@ -295,7 +323,7 @@
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="meteorix">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/qiyu.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -350,7 +378,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-04-22 14:48:07" itemprop="dateModified" datetime="2019-04-22T14:48:07+08:00">2019-04-22</time>
+                <time title="Modified: 2019-04-22 23:47:40" itemprop="dateModified" datetime="2019-04-22T23:47:40+08:00">2019-04-22</time>
               
             
           </span>
@@ -392,6 +420,7 @@
 <p>安装<code>zsh/vim/git</code></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install zsh vim git</span><br></pre></td></tr></table></figure>
 <h3 id="git"><a href="#git" class="headerlink" title="git"></a>git</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global core.editor &quot;vim&quot;</span><br><span class="line">git config --global --edit  # 设置name和email</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <h3 id="zsh"><a href="#zsh" class="headerlink" title="zsh"></a>zsh</h3><p>配置<strong>oh-my-zsh</strong> <a href="https://github.com/robbyrussell/oh-my-zsh" target="_blank" rel="noopener">https://github.com/robbyrussell/oh-my-zsh</a></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"</span><br></pre></td></tr></table></figure>
 <p>如果替换默认shell失败，先设置密码再替换<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">passwd  # 设置密码</span><br><span class="line">chsh zsh</span><br></pre></td></tr></table></figure></p>
@@ -406,6 +435,10 @@
 
       
     </div>
+
+    
+      
+
 
     
 
@@ -509,6 +542,8 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image" src="/images/qiyu.jpg" alt="meteorix">
+            
               <p class="site-author-name" itemprop="name">meteorix</p>
               <div class="site-description motion-element" itemprop="description"></div>
           </div>
@@ -534,6 +569,10 @@
                 <div class="site-state-item site-state-tags">
                   
                     
+                      <a href="/tags/">
+                    
+                  
+                    
                     
                       
                     
@@ -543,7 +582,7 @@
                     
                     <span class="site-state-item-count">3</span>
                     <span class="site-state-item-name">tags</span>
-                  
+                  </a>
                 </div>
               
             </nav>
@@ -553,6 +592,21 @@
 
           
 
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/meteorix" title="GitHub &rarr; https://github.com/meteorix" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            </div>
           
 
           
@@ -620,7 +674,7 @@
 
 
 
-  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.1.0</div>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.1.0</div>
 
 
 
@@ -708,7 +762,9 @@
   
 
 
-  <script src="/js/schemes/muse.js?v=7.1.0"></script>
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
 
 
 

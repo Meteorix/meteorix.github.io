@@ -14,7 +14,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="">
+<html class="theme-next pisces use-motion" lang="">
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -70,9 +70,9 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Muse',
+    scheme: 'Pisces',
     version: '7.1.0',
-    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    sidebar: {"position":"left","display":"always","offset":12,"onmobile":false,"dimmer":false},
     back2top: true,
     back2top_sidebar: false,
     fancybox: false,
@@ -125,6 +125,17 @@
 
 
 
+
+  <script async src="//www.googletagmanager.com/gtag/js?id=UA-138766747-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-138766747-1');
+    }
+  </script>
 
 
 
@@ -237,14 +248,28 @@
     <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
 
   </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
 
       
       
     </ul>
   
-
-  
-    
 
   
 
@@ -266,6 +291,9 @@
     <main id="main" class="main">
       <div class="main-inner">
         <div class="content-wrap">
+          
+            
+
           
           <div id="content" class="content">
             
@@ -291,7 +319,7 @@
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="meteorix">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/qiyu.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -348,7 +376,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-04-22 14:48:36" itemprop="dateModified" datetime="2019-04-22T14:48:36+08:00">2019-04-22</time>
+                <time title="Modified: 2019-04-22 23:46:24" itemprop="dateModified" datetime="2019-04-22T23:46:24+08:00">2019-04-22</time>
               
             
           </span>
@@ -383,8 +411,7 @@
 
       
         
-          
-            <h1 id="vs2017混合调试py-c"><a href="#vs2017混合调试py-c" class="headerlink" title="vs2017混合调试py/c++"></a>vs2017混合调试py/c++</h1><h2 id="python卡死了怎么办"><a href="#python卡死了怎么办" class="headerlink" title="python卡死了怎么办?"></a>python卡死了怎么办?</h2><p>一般的python程序卡死，可以用pycharm debug。但是有时候是python和c/c++库混合开发，比如pyqt或者boost python程序卡死，就非常难查。以前都是二分法注释代码查找问题，异常低效。</p>
+          <h1 id="vs2017混合调试py-c"><a href="#vs2017混合调试py-c" class="headerlink" title="vs2017混合调试py/c++"></a>vs2017混合调试py/c++</h1><h2 id="python卡死了怎么办"><a href="#python卡死了怎么办" class="headerlink" title="python卡死了怎么办?"></a>python卡死了怎么办?</h2><p>一般的python程序卡死，可以用pycharm debug。但是有时候是python和c/c++库混合开发，比如pyqt或者boost python程序卡死，就非常难查。以前都是二分法注释代码查找问题，异常低效。</p>
 <p>于是我尝试了vs2017的新功能：python &amp; c++ 混合调试 <a href="https://docs.microsoft.com/en-us/visualstudio/python/debugging-mixed-mode-c-cpp-python-in-visual-studio?view=vs-2017" target="_blank" rel="noopener">Debug Python and C++ together</a></p>
 <h2 id="vs2017-python"><a href="#vs2017-python" class="headerlink" title="vs2017 python"></a>vs2017 python</h2><p>vs一直被称为宇宙最强IDE，貌似python支持是vs2017新加的功能。相比pycharm之类的python编辑器，vs2017最大的优势就是在python和native c/c++代码的混合调试。包括：</p>
 <ul>
@@ -394,42 +421,22 @@
 <li>python / c++ 对象都可以watch</li>
 </ul>
 <p>由于python的性能瓶颈，很多时候混合开发需要同时调试，这正是我们需要的！</p>
-<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>下面以<code>Sunshine</code>(一个PyQt5程序)为例</p>
-<ol>
-<li>安装vs2017 python支持</li>
-<li><p>导入Sunshine项目，会在主目录生成Sunshine.sln，以后都可以双击打开了</p>
-<p> <code>New Project-&gt;Python-&gt;From Existing Python Code</code><br> <img src="/images/vsdebugpycpp/5c3d9b205e60273aadf4650714DcRPJX.png" alt="image.png"></p>
-</li>
-<li>按照官网文档配置<a href="https://docs.microsoft.com/en-us/visualstudio/python/debugging-mixed-mode-c-cpp-python-in-visual-studio?view=vs-2017#enable-mixed-mode-debugging-in-a-python-project" target="_blank" rel="noopener">Enable mixed-mode debugging in a Python project</a></li>
-<li>安装python的<code>pdb</code>文件，3.6直接用python installer安装，参考<a href="https://docs.microsoft.com/en-us/visualstudio/python/debugging-symbols-for-mixed-mode-c-cpp-python?view=vs-2017#download-symbols" target="_blank" rel="noopener">这里</a></li>
-<li>配置<code>pdb</code>文件，主要是qt5的。qt5.9之后提供了pdb文件下载，<a href="https://download.qt.io/archive/qt/5.11/5.11.2/" target="_blank" rel="noopener">5.11.2的在这里</a>（PyQt最新版5.11.3，用的是Qt5.11.2，别问我为什么知道）</li>
-<li>选择<code>Sunshine.py</code> <strong>F5</strong>启动！</li>
-</ol>
-<p>启动会比较慢，从输出窗口可以看出vs再加载各个py文件的symbol。。。（额，毕竟是试验性的功能）</p>
-<h2 id="让我们试试吧"><a href="#让我们试试吧" class="headerlink" title="让我们试试吧"></a>让我们试试吧</h2><h3 id="卡死时候暂停"><a href="#卡死时候暂停" class="headerlink" title="卡死时候暂停"></a>卡死时候暂停</h3><p>假设我们现在的Sunshine卡死了，这时候点击vs上的暂停按钮，就能立马停住。</p>
-<p><img src="/images/vsdebugpycpp/5c3d9dbcaa49f15c3726191dzKYsU5Qw.png" alt="image.png"></p>
-<p>回想起Pycharm停不住的恐惧！毕竟vs是native的暂停，宇宙第一！</p>
-<h3 id="强大的混合调试"><a href="#强大的混合调试" class="headerlink" title="强大的混合调试"></a>强大的混合调试</h3><p>这时候就能使用强大的<strong>混合调试</strong>功能了，包括但不限于：</p>
-<ul>
-<li>同时查看python/c++ callstack</li>
-<li>callstack双击跳转到源码</li>
-<li>切换线程</li>
-<li>查看locals</li>
-</ul>
-<p><img src="/images/vsdebugpycpp/5c3d9e54a7f2529830bb770bjqP16HQy.png" alt="image.png"></p>
-<h3 id="混合的单步调试"><a href="#混合的单步调试" class="headerlink" title="混合的单步调试"></a>混合的单步调试</h3><p>以前python调到Qt里面去之后，就不知道发生了什么，现在可以从python step到c++中。</p>
-<p><img src="/images/vsdebugpycpp/5c3da03a96dee435e6604c4aVmHaq5uC.png" alt="image.png"></p>
-<p>双击callstack中的c++ frame，vs会提示你打开。当然，这需要你本地下载了qt的c++代码。</p>
-<p>然后你就可以在c++中打断点，做各种基本操作了</p>
-<h2 id="换成Attach模式"><a href="#换成Attach模式" class="headerlink" title="换成Attach模式"></a>换成Attach模式</h2><p>vs Debug启动python项目真的超级慢（感觉是有bug），而且我们经常是使用过程中进程卡死，这时候就需要Attach到卡死的python进程。</p>
-<p>Debug-&gt;Attach to Process</p>
-<p><img src="/images/vsdebugpycpp/5c3da1cb7f9d2a99198674256wRjQZ2J.png" alt="image.png"></p>
-<p>连上之后所有功能一样使用</p>
-
+          <!--noindex-->
           
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/13/vsdebugpycpp/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
         
       
     </div>
+
+    
+      
+
 
     
 
@@ -486,7 +493,7 @@
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="meteorix">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/qiyu.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -543,7 +550,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-04-22 14:45:47" itemprop="dateModified" datetime="2019-04-22T14:45:47+08:00">2019-04-22</time>
+                <time title="Modified: 2019-04-22 23:46:37" itemprop="dateModified" datetime="2019-04-22T23:46:37+08:00">2019-04-22</time>
               
             
           </span>
@@ -578,8 +585,7 @@
 
       
         
-          
-            <h1 id="gdb调试cpython"><a href="#gdb调试cpython" class="headerlink" title="gdb调试cpython"></a>gdb调试cpython</h1><p>主要参考这篇文章：</p>
+          <h1 id="gdb调试cpython"><a href="#gdb调试cpython" class="headerlink" title="gdb调试cpython"></a>gdb调试cpython</h1><p>主要参考这篇文章：</p>
 <ul>
 <li><a href="https://www.podoliaka.org/2016/04/10/debugging-cpython-gdb/" target="_blank" rel="noopener">https://www.podoliaka.org/2016/04/10/debugging-cpython-gdb/</a></li>
 <li><a href="https://blog.alswl.com/2013/11/python-gdb/" target="_blank" rel="noopener">https://blog.alswl.com/2013/11/python-gdb/</a></li>
@@ -587,26 +593,22 @@
 <h2 id="同时debug-c栈和py栈"><a href="#同时debug-c栈和py栈" class="headerlink" title="同时debug c栈和py栈"></a>同时debug c栈和py栈</h2><p>在调试脚本卡死的时候特别有用，如下图</p>
 <p><img src="/images/gdbpython/bt.png" alt="image"></p>
 <h2 id="安装python-dbg"><a href="#安装python-dbg" class="headerlink" title="安装python-dbg"></a>安装python-dbg</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install gdb python-dbg</span><br></pre></td></tr></table></figure>
-<p><code>python-dbg</code>包含symbol和py-bt</p>
-<p>会自动把libpython.py装到gdb的auto-load目录，并且保证后面的子目录跟python的目录地址一样</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ which python2.7</span><br><span class="line">/usr/bin/python2.7</span><br><span class="line">➜  ~ ls /usr/share/gdb/auto-load/usr/bin/          </span><br><span class="line">python2.7-dbg-gdb.py  python2.7-gdb.py</span><br></pre></td></tr></table></figure>
-<h3 id="其他版本python安装gdb-dbg"><a href="#其他版本python安装gdb-dbg" class="headerlink" title="其他版本python安装gdb dbg"></a>其他版本python安装gdb dbg</h3><p>由于自己在服务器上安装了多个版本的python，比如自己用源码编译的py3.7</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ which python3.7</span><br><span class="line">/usr/local/bin/python3.7</span><br></pre></td></tr></table></figure>
-<p>然后可以在python的源码里面找到<code>Toos/gdb/libpython.py</code></p>
-<blockquote>
-<p><a href="https://github.com/python/cpython/tree/3.7/Tools/gdb" target="_blank" rel="noopener">https://github.com/python/cpython/tree/3.7/Tools/gdb</a></p>
-</blockquote>
-<p>按照上面的目录规则cp到gdb的auto-load，保证调试python3.7进程的时候能找到</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ ls /usr/share/gdb/auto-load/usr/local/bin/          </span><br><span class="line">python3.7-dbg-gdb.py  python3.7-gdb.py</span><br></pre></td></tr></table></figure>
-<h3 id="attach到python进程"><a href="#attach到python进程" class="headerlink" title="attach到python进程"></a>attach到python进程</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ps -x | grep python</span><br><span class="line">gdb -p &lt;pid&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">bt    # 当前C调用栈</span><br><span class="line">py-bt  # 当前Py调用栈</span><br><span class="line">py-list  # 当前py代码位置</span><br><span class="line">info thread   # 线程信息</span><br><span class="line">thread &lt;id&gt;   # 切换到某个线程</span><br><span class="line">thread apply all py-list  # 查看所有线程的py代码位置</span><br><span class="line">ctrl-c  # 中断</span><br></pre></td></tr></table></figure>
-<p>py-bt如果遇到中文编码问题<br>export LC_CTYPE=C.UTF-8</p>
-<h3 id="配合gdb-dashboard，更方便一点"><a href="#配合gdb-dashboard，更方便一点" class="headerlink" title="配合gdb dashboard，更方便一点"></a>配合gdb dashboard，更方便一点</h3><p><a href="https://github.com/cyrus-and/gdb-dashboard" target="_blank" rel="noopener">https://github.com/cyrus-and/gdb-dashboard</a></p>
-
+          <!--noindex-->
           
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/13/gdbpython/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
         
       
     </div>
+
+    
+      
+
 
     
 
@@ -663,7 +665,7 @@
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="meteorix">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/qiyu.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -720,7 +722,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-04-22 14:48:07" itemprop="dateModified" datetime="2019-04-22T14:48:07+08:00">2019-04-22</time>
+                <time title="Modified: 2019-04-22 23:47:40" itemprop="dateModified" datetime="2019-04-22T23:47:40+08:00">2019-04-22</time>
               
             
           </span>
@@ -755,8 +757,7 @@
 
       
         
-          
-            <h1 id="新ubuntu环境搭建"><a href="#新ubuntu环境搭建" class="headerlink" title="新ubuntu环境搭建"></a>新ubuntu环境搭建</h1><h3 id="apt"><a href="#apt" class="headerlink" title="apt"></a>apt</h3><p>替换apt源</p>
+          <h1 id="新ubuntu环境搭建"><a href="#新ubuntu环境搭建" class="headerlink" title="新ubuntu环境搭建"></a>新ubuntu环境搭建</h1><h3 id="apt"><a href="#apt" class="headerlink" title="apt"></a>apt</h3><p>替换apt源</p>
 <ul>
 <li>源列表：<a href="http://wiki.ubuntu.org.cn/" target="_blank" rel="noopener">http://wiki.ubuntu.org.cn/</a></li>
 <li>清华源：<a href="https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/" target="_blank" rel="noopener">https://mirror.tuna.tsinghua.edu.cn/help/ubuntu/</a></li>
@@ -764,22 +765,22 @@
 <p>安装<code>zsh/vim/git</code></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install zsh vim git</span><br></pre></td></tr></table></figure>
 <h3 id="git"><a href="#git" class="headerlink" title="git"></a>git</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global core.editor &quot;vim&quot;</span><br><span class="line">git config --global --edit  # 设置name和email</span><br></pre></td></tr></table></figure>
-<h3 id="zsh"><a href="#zsh" class="headerlink" title="zsh"></a>zsh</h3><p>配置<strong>oh-my-zsh</strong> <a href="https://github.com/robbyrussell/oh-my-zsh" target="_blank" rel="noopener">https://github.com/robbyrussell/oh-my-zsh</a></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"</span><br></pre></td></tr></table></figure>
-<p>如果替换默认shell失败，先设置密码再替换<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">passwd  # 设置密码</span><br><span class="line">chsh zsh</span><br></pre></td></tr></table></figure></p>
-<p>解决zsh 有残留的问题，在 <code>~/.zshrc</code> 添加</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export LANG=en_US.UTF-8</span><br><span class="line">export LC_ALL=en_US.UTF-8</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>参考：<a href="https://github.com/sindresorhus/pure/issues/300" target="_blank" rel="noopener">https://github.com/sindresorhus/pure/issues/300</a></p>
-</blockquote>
-<p>解决tabname闪烁的问题，在<code>~/.zshrc</code>disable掉autotitle<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DISABLE_AUTO_TITLE=&quot;true&quot;</span><br></pre></td></tr></table></figure></p>
-<h3 id="vimrc"><a href="#vimrc" class="headerlink" title="vimrc"></a>vimrc</h3><p>配置<strong>vimrc</strong> <a href="https://github.com/amix/vimrc" target="_blank" rel="noopener">https://github.com/amix/vimrc</a><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime</span><br><span class="line">sh ~/.vim_runtime/install_basic_vimrc.sh</span><br></pre></td></tr></table></figure></p>
-<p>还要在<code>~/.vimrc</code>加上<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set nu  # 我喜欢加上行号</span><br><span class="line">set fencs=utf-8,gbk   # 这一行的作用是告诉vim，打开一个文件时，尝试utf8,gbk两种编码</span><br></pre></td></tr></table></figure></p>
-
+          <!--noindex-->
           
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/13/newubuntu/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
         
       
     </div>
+
+    
+      
+
 
     
 
@@ -836,7 +837,7 @@
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="meteorix">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/qiyu.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -893,7 +894,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-04-22 15:10:56" itemprop="dateModified" datetime="2019-04-22T15:10:56+08:00">2019-04-22</time>
+                <time title="Modified: 2019-04-22 23:48:15" itemprop="dateModified" datetime="2019-04-22T23:48:15+08:00">2019-04-22</time>
               
             
           </span>
@@ -928,8 +929,7 @@
 
       
         
-          
-            <h1 id="Airtest刷刷抖音"><a href="#Airtest刷刷抖音" class="headerlink" title="Airtest刷刷抖音"></a>Airtest刷刷抖音</h1><p>用<a href="https://github.com/AirtestProject/Airtest" target="_blank" rel="noopener">Airtest</a>做点有意思的事情，先来刷个抖音？</p>
+          <h1 id="Airtest刷刷抖音"><a href="#Airtest刷刷抖音" class="headerlink" title="Airtest刷刷抖音"></a>Airtest刷刷抖音</h1><p>用<a href="https://github.com/AirtestProject/Airtest" target="_blank" rel="noopener">Airtest</a>做点有意思的事情，先来刷个抖音？</p>
 <p><a href="https://github.com/Meteorix/airtest-douyin" target="_blank" rel="noopener">github仓库 airtest-douyin</a></p>
 <p><img src="/images/airtest-douyin/ide01.png" alt="ide01"></p>
 <h2 id="Get-Started"><a href="#Get-Started" class="headerlink" title="Get Started"></a>Get Started</h2><h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><p>手边没有android手机，iOS又懒得搭<a href="https://github.com/AirtestProject/iOS-Tagent" target="_blank" rel="noopener">ios-tagent</a>的环境，于是采用最偷懒的方式：</p>
@@ -937,50 +937,22 @@
 <li><a href="https://www.yeshen.com/" target="_blank" rel="noopener">夜神模拟器</a>（可用安卓机代替）</li>
 <li><a href="http://airtest.netease.com/" target="_blank" rel="noopener">AirtestIDE</a></li>
 </ul>
-<p>夜神模拟器装上抖音，用起来跟手机上一样舒服。看了下模拟器占内存200m和CPU 12%左右，还不错。夜神自带了一个多开器，后面分布式刷抖音再玩玩</p>
-<p><img src="/images/airtest-douyin/nox.png" alt="nox"></p>
-<h3 id="录制第一版代码"><a href="#录制第一版代码" class="headerlink" title="录制第一版代码"></a>录制第一版代码</h3><p>打开AirtestIDE，按照<a href="http://airtest.netease.com/docs/cn/2_device_connection/3_emulator_connection.html#id2" target="_blank" rel="noopener">文档</a>连接好模拟器</p>
-<p><img src="/images/airtest-douyin/ide01.png" alt="ide01"></p>
-<p>为了每次能用代码自动打开抖音，先用右上角的安卓助手查看一下抖音的package id</p>
-<p><img src="/images/airtest-douyin/assistant.png" alt="assistant"></p>
-<p>手动加上代码</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">APP = <span class="string">"com.ss.android.ugc.aweme"</span></span><br><span class="line"></span><br><span class="line">stop_app(APP)</span><br><span class="line">start_app(APP)</span><br></pre></td></tr></table></figure>
-<p>然后将AirtestIDE调到安卓App的录制模式，进行一些操作，对应的代码就录制下来了</p>
-<p><img src="/images/airtest-douyin/ide02.png" alt="ide02"></p>
-<h3 id="稍微调整代码"><a href="#稍微调整代码" class="headerlink" title="稍微调整代码"></a>稍微调整代码</h3><p>自动录制的代码不太好，稍微调整一下</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">poco(boundsInParent=<span class="string">"[0.03194444444444444, 0.02734375]"</span>).click()</span><br></pre></td></tr></table></figure>
-<p>直接改成通过<code>text</code>来识别按钮</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">poco(text=<span class="string">"我"</span>).click()</span><br></pre></td></tr></table></figure>
-<p>后面的上划操作，改成上划屏幕的<code>60%</code></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">poco(<span class="string">"com.ss.android.ugc.aweme:id/ak2"</span>).swipe([<span class="number">0</span>, <span class="number">-0.6</span>])</span><br></pre></td></tr></table></figure>
-<p>然后按<code>F5</code>运行一遍，一切正常</p>
-<h3 id="一直刷下去"><a href="#一直刷下去" class="headerlink" title="一直刷下去"></a>一直刷下去</h3><p>简单地修改下最后一行代码，就能一直刷下去了</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">    poco(<span class="string">"com.ss.android.ugc.aweme:id/ak2"</span>).swipe([<span class="number">0</span>, <span class="number">-0.6</span>])</span><br><span class="line">    sleep(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="好人点个赞"><a href="#好人点个赞" class="headerlink" title="好人点个赞"></a>好人点个赞</h3><p>继续用IDE的录制功能，进行点赞操作，生成下面的代码</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">poco(<span class="string">"com.ss.android.ugc.aweme:id/al8"</span>).click()</span><br></pre></td></tr></table></figure>
-<p>原来抖音需要登录之后才能点赞，先手动登录吧，代码里面留个<code>TODO</code></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> poco(text=<span class="string">"输入手机号码"</span>).exists():</span><br><span class="line">    <span class="comment"># <span class="doctag">TODO:</span> 自动登录</span></span><br><span class="line">    print(<span class="string">"先手动登录一下吧~"</span>)</span><br><span class="line">    <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
-<p><img src="/images/airtest-douyin/ide03.png" alt="ide03"></p>
-<p>然后我们截个图留念</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">snapshot()</span><br></pre></td></tr></table></figure>
-<p>再运行一下，效果非常好</p>
-<p><img src="/images/airtest-douyin/snapshot.png" alt="snapshot"></p>
-<blockquote>
-<p>tips: 点击IDE工具栏的<code>log</code>按钮，你还能看到每步操作的报告。</p>
-</blockquote>
-<h3 id="提交代码"><a href="#提交代码" class="headerlink" title="提交代码"></a>提交代码</h3><p>这个脚本里面没有用到图像识别，单个py文件就够了。于是我们从<code>douyin.air</code>里面取出代码文件。这样可以用你喜欢的编辑器打开修改，用python直接运行了。</p>
-<p>最终代码在<a href="https://github.com/Meteorix/airtest-douyin/blob/master/code/douyin.py" target="_blank" rel="noopener">code/douyin.py</a>，直接python运行。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python douyin.py</span><br></pre></td></tr></table></figure>
-<h3 id="To-be-continued"><a href="#To-be-continued" class="headerlink" title="To be continued"></a>To be continued</h3><ul>
-<li>录屏替代截图</li>
-<li>多开&amp;分布式</li>
-<li>图像识别小姐姐点赞</li>
-</ul>
-
+          <!--noindex-->
           
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/05/airtest-douyin/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
         
       
     </div>
+
+    
+      
+
 
     
 
@@ -1037,7 +1009,7 @@
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="meteorix">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/qiyu.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -1139,6 +1111,10 @@
     </div>
 
     
+      
+
+
+    
 
     
     
@@ -1193,7 +1169,7 @@
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="meteorix">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/qiyu.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -1250,7 +1226,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-04-22 14:53:18" itemprop="dateModified" datetime="2019-04-22T14:53:18+08:00">2019-04-22</time>
+                <time title="Modified: 2019-04-22 23:49:54" itemprop="dateModified" datetime="2019-04-22T23:49:54+08:00">2019-04-22</time>
               
             
           </span>
@@ -1285,8 +1261,7 @@
 
       
         
-          
-            <p>如何写出更好的代码——刘欣 2018.6.20</p>
+          <p>如何写出更好的代码——刘欣 2018.6.20</p>
 <blockquote>
 <p>“Design patterns help you learn from others’ successes instead of your own failures”</p>
 </blockquote>
@@ -1301,79 +1276,23 @@
 <li><p>里氏替换原则</p>
 <ul>
 <li>所有使用父类的地方必须能完全替换为使用其子类</li>
-<li>即：子类可以扩展父类的功能，但不能改变父类原有的功能</li>
-</ul>
-</li>
-<li><p>依赖倒置原则</p>
-<ul>
-<li>高层模块不应该依赖低层模块，二者都应该依赖其抽象</li>
-<li>抽象不应该依赖实现；实现应该依赖抽象</li>
-<li>面向接口编程，而不是面向实现编程，Duck Type</li>
-</ul>
-</li>
-<li><p>接口隔离原则</p>
-<ul>
-<li>一个类对另一个类依赖的接口越少越好</li>
-</ul>
-</li>
-<li><p>最小知识原则</p>
-<ul>
-<li>一个类对另一个类知道得越少越好</li>
-</ul>
-</li>
-<li><p>开闭原则</p>
-<ul>
-<li>类、模块、函数对扩展开放，对修改关闭</li>
-<li>尽量在不修改源代码的情况下进行扩展</li>
-</ul>
-</li>
-</ol>
-<blockquote>
-<p>其实以上的原则不限于类的设计，很多工程上的系统设计也适用。</p>
-</blockquote>
-<h2 id="常用设计模式"><a href="#常用设计模式" class="headerlink" title="常用设计模式"></a>常用设计模式</h2><h3 id="创造模式"><a href="#创造模式" class="headerlink" title="创造模式"></a>创造模式</h3><h4 id="Singleton"><a href="#Singleton" class="headerlink" title="Singleton"></a>Singleton</h4><p>一个类只有一个对象，似乎不太需要解释：）</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SingletonMeta</span><span class="params">(type)</span>:</span></span><br><span class="line"></span><br><span class="line">    instance = <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(cls, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> cls.instance <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            cls.instance = super(SingletonMeta, cls).__call__(*args, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> cls.instance</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CurrentUser</span><span class="params">(object, metaclass=SingletonMeta)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name=None)</span>:</span></span><br><span class="line">        super(CurrentUser, self).__init__()</span><br><span class="line">        self.name = name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> repr(self) + <span class="string">":"</span> + repr(self.name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    u = CurrentUser(<span class="string">"liu"</span>)</span><br><span class="line">    print(u)</span><br><span class="line">    u2 = CurrentUser()</span><br><span class="line">    u2.name = <span class="string">"xin"</span></span><br><span class="line">    print(u2)</span><br><span class="line">    print(u)</span><br><span class="line">    <span class="keyword">assert</span> u <span class="keyword">is</span> u2</span><br></pre></td></tr></table></figure>
-<p>这个例子用MetaClass实现，其实Python里还有其他实现方式。但是Python里的MetaClass就是用来实例化Class的，用来实现单例类正好。</p>
-<h4 id="Factory"><a href="#Factory" class="headerlink" title="Factory"></a>Factory</h4><p>工厂模式，用于生产一大堆对象。这里用<code>__subclasses__</code>来获取子类，这样可以动态扩展子类而不改变factory的代码。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Shape</span><span class="params">(object)</span>:</span></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">factory</span><span class="params">(cls, name, *args, **kwargs)</span>:</span></span><br><span class="line">        types = &#123;c.__name__: c <span class="keyword">for</span> c <span class="keyword">in</span> cls.__subclasses__()&#125;  <span class="comment"># 忽略性能:P</span></span><br><span class="line">        shape_class = types[name]</span><br><span class="line">        <span class="keyword">return</span> shape_class(*args, **kwargs)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Circle</span><span class="params">(Shape)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Square</span><span class="params">(Shape)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    shapes = [<span class="string">"Circle"</span>, <span class="string">"Square"</span>, <span class="string">"Square"</span>, <span class="string">"Circle"</span>]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> shapes:</span><br><span class="line">        s = Shape.factory(i)</span><br><span class="line">        print(s)</span><br></pre></td></tr></table></figure></p>
-<h3 id="结构模式"><a href="#结构模式" class="headerlink" title="结构模式"></a>结构模式</h3><h4 id="MVC"><a href="#MVC" class="headerlink" title="MVC"></a>MVC</h4><p>可能是最有名的设计模式，<code>数据&lt;-&gt;控制器&lt;-&gt;视图</code>。数据和视图分离，还可以同一份数据渲染多个视图。MVC做的最好的应该是各种Web框架和GUI框架。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Model</span><span class="params">(object)</span>:</span></span><br><span class="line">    products = &#123;</span><br><span class="line">        <span class="string">'milk'</span>: &#123;<span class="string">'price'</span>: <span class="number">1.50</span>, <span class="string">'quantity'</span>: <span class="number">10</span>&#125;,</span><br><span class="line">        <span class="string">'eggs'</span>: &#123;<span class="string">'price'</span>: <span class="number">0.20</span>, <span class="string">'quantity'</span>: <span class="number">100</span>&#125;,</span><br><span class="line">        <span class="string">'cheese'</span>: &#123;<span class="string">'price'</span>: <span class="number">2.00</span>, <span class="string">'quantity'</span>: <span class="number">10</span>&#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.products.get(name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">View</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show_item_list</span><span class="params">(self, item_list)</span>:</span></span><br><span class="line">        print(<span class="string">'-'</span> * <span class="number">20</span>)</span><br><span class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> item_list:</span><br><span class="line">            print(<span class="string">"* Name: %s"</span> % item)</span><br><span class="line">        print(<span class="string">'-'</span> * <span class="number">20</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show_item_info</span><span class="params">(self, name, item_info)</span>:</span></span><br><span class="line">        print(<span class="string">"Name: %s Price: %s Quantity: %s"</span> % (name, item_info[<span class="string">'price'</span>], item_info[<span class="string">'quantity'</span>]))</span><br><span class="line">        print(<span class="string">'-'</span> * <span class="number">20</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show_empty</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        print(<span class="string">"Name: %s not found"</span> % name)</span><br><span class="line">        print(<span class="string">'-'</span> * <span class="number">20</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Controller</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, model, view)</span>:</span></span><br><span class="line">        self.model = model</span><br><span class="line">        self.view = view</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show_items</span><span class="params">(self)</span>:</span></span><br><span class="line">        items = self.model.products.keys()</span><br><span class="line">        self.view.show_item_list(items)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show_item_info</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        item_info = self.model.get(item)</span><br><span class="line">        <span class="keyword">if</span> item_info:</span><br><span class="line">            self.view.show_item_info(item, item_info)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.view.show_empty(item)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    model = Model()</span><br><span class="line">    view = View()</span><br><span class="line">    controller = Controller(model, view)</span><br><span class="line">    controller.show_items()</span><br><span class="line">    controller.show_item_info(<span class="string">'cheese'</span>)</span><br><span class="line">    controller.show_item_info(<span class="string">'apple'</span>)</span><br></pre></td></tr></table></figure></p>
-<p>上面的例子还只演示了数据到视图的渲染，其实MVC还包括通过视图修改数据。</p>
-<h4 id="Proxy"><a href="#Proxy" class="headerlink" title="Proxy"></a>Proxy</h4><p>不直接调用一个类，而是通过一个代理来访问。这样做的好处有：可以切换底层实现、权限控制、安全检查等。当然最有用的是可以实现远程代理，jsonrpc就是一种。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Implementation</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(self, x, y)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">minus</span><span class="params">(self, x, y)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> x - y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Proxy</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, impl)</span>:</span></span><br><span class="line">        self._impl = impl</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattr__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> getattr(self._impl, name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    p = Proxy(Implementation())</span><br><span class="line">    print(p.add(<span class="number">1</span>, <span class="number">2</span>))</span><br><span class="line">    print(p.minus(<span class="number">1</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure></p>
-<h4 id="Decorator"><a href="#Decorator" class="headerlink" title="Decorator"></a>Decorator</h4><p>装饰器，似乎不太需要解释，Python自带的语法，可以用来做很多事情，几个简单例子：</p>
-<ul>
-<li>路由</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'Hello, World'</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/home')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">home</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'Welcome Home'</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>权限控制</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.contrib.auth.decorators <span class="keyword">import</span> login_required</span><br><span class="line"></span><br><span class="line"><span class="meta">@login_required</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_view</span><span class="params">(request)</span>:</span></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
-<ul>
-<li>输入输出</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(f)</span>:</span></span><br><span class="line"><span class="meta">    @wraps(f)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">debug_function</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        print(<span class="string">'call: '</span>, f.__name__, args, kwargs)</span><br><span class="line">        ret = f(*args, **kwargs)</span><br><span class="line">        print(<span class="string">'return: '</span>, ret)</span><br><span class="line">    <span class="keyword">return</span> debug_function</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@debug</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">(a, b, c=None)</span>:</span></span><br><span class="line">    print(a, b, c)</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    foo(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="行为模式"><a href="#行为模式" class="headerlink" title="行为模式"></a>行为模式</h3><h4 id="Template"><a href="#Template" class="headerlink" title="Template"></a>Template</h4><p>基类作为模板，定义好接口，子类来实现功能，最好的例子就是Qt里的各种QWidget。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ApplicateFramework</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.setup()</span><br><span class="line">        self.show()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setup</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">close</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyApplication</span><span class="params">(ApplicateFramework)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setup</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"setup"</span>, self)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"show"</span>, self)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">close</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"close"</span>, self)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    app = MyApplication()</span><br><span class="line">    app.close()</span><br></pre></td></tr></table></figure>
-<h4 id="State-Machine"><a href="#State-Machine" class="headerlink" title="State Machine"></a>State Machine</h4><p>状态机，<code>当前状态 + 操作 =&gt; 下一个状态</code>，似乎也不用怎么解释。如下例子实现的状态机，可以自定义状态、操作和转换规则。扩展的时候无需修改状态机代码，符合<strong>开闭原则</strong>。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StateMachine</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, init_state)</span>:</span></span><br><span class="line">        self.current_state = init_state</span><br><span class="line">        self.current_state.run()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">step</span><span class="params">(self, action)</span>:</span></span><br><span class="line">        self.current_state = self.current_state.next(action)</span><br><span class="line">        self.current_state.run()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">State</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"&lt;State '%s'&gt;"</span> % self.name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">next</span><span class="params">(self, action)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> (self, action) <span class="keyword">in</span> mapping:</span><br><span class="line">            next_state = mapping[(self, action)]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            next_state = self</span><br><span class="line">        print(<span class="string">"%s + %s =&gt; %s"</span> % (self, action, next_state))</span><br><span class="line">        <span class="keyword">return</span> next_state</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(self, <span class="string">"is current state"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Action</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"&lt;Action '%s'&gt;"</span> % self.name</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">State.Running = State(<span class="string">"Running"</span>)</span><br><span class="line">State.Stopped = State(<span class="string">"Stopped"</span>)</span><br><span class="line">State.Paused = State(<span class="string">"Paused"</span>)</span><br><span class="line"></span><br><span class="line">Action.start = Action(<span class="string">"start"</span>)</span><br><span class="line">Action.stop = Action(<span class="string">"stop"</span>)</span><br><span class="line">Action.pause = Action(<span class="string">"pause"</span>)</span><br><span class="line">Action.resume = Action(<span class="string">"resume"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mapping = &#123;</span><br><span class="line">    (State.Stopped, Action.start): State.Running,</span><br><span class="line">    (State.Running, Action.stop): State.Stopped,</span><br><span class="line">    (State.Running, Action.pause): State.Paused,</span><br><span class="line">    (State.Paused, Action.resume): State.Running,</span><br><span class="line">    (State.Paused, Action.stop): State.Stopped,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    state_machine = StateMachine(State.Stopped)</span><br><span class="line">    state_machine.step(Action.start)</span><br><span class="line">    state_machine.step(Action.pause)</span><br><span class="line">    state_machine.step(Action.resume)</span><br><span class="line">    state_machine.step(Action.stop)</span><br></pre></td></tr></table></figure>
-<h4 id="Iterator"><a href="#Iterator" class="headerlink" title="Iterator"></a>Iterator</h4><p>迭代器，在Python中也不需要怎么解释，使用起来好像理所应当一样。实际上迭代器的一大优势是无需关心数据类型，一样的<code>for</code>语法。另一大优势是无需事先计算好所有元素，而是在迭代到的时候才计算。如下例子是Python中使用<code>yield</code>语法产生生成器<code>generator</code>来实现的迭代器，优势一目了然。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fibonacci</span><span class="params">(count=<span class="number">100</span>)</span>:</span></span><br><span class="line">    a, b = <span class="number">1</span>, <span class="number">2</span></span><br><span class="line">    <span class="keyword">yield</span> a</span><br><span class="line">    <span class="keyword">yield</span> b</span><br><span class="line">    <span class="keyword">while</span> count:</span><br><span class="line">        a, b = b, a + b</span><br><span class="line">        count -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">yield</span> b</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> fibonacci():</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure></p>
-<h4 id="Command"><a href="#Command" class="headerlink" title="Command"></a>Command</h4><p>Command封装了一个原子操作，在类外面实现，个人认为最大的作用是实现<code>redo/undo</code>。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> deque</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Document</span><span class="params">(object)</span>:</span></span><br><span class="line">    value = <span class="string">""</span></span><br><span class="line">    cmd_stack = deque()</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">execute</span><span class="params">(cls, cmd)</span>:</span></span><br><span class="line">        cmd.redo()</span><br><span class="line">        cls.cmd_stack.append(cmd)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">undo</span><span class="params">(cls)</span>:</span></span><br><span class="line">        cmd = cls.cmd_stack.pop()</span><br><span class="line">        cmd.undo()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AddTextCommand</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, text)</span>:</span></span><br><span class="line">        self.text = text</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">redo</span><span class="params">(self)</span>:</span></span><br><span class="line">        Document.value += self.text</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">undo</span><span class="params">(self)</span>:</span></span><br><span class="line">        Document.value = Document.value[:-len(self.text)]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    cmds = [AddTextCommand(<span class="string">"liu"</span>), AddTextCommand(<span class="string">"xin"</span>), AddTextCommand(<span class="string">"heihei"</span>)]</span><br><span class="line">    <span class="keyword">for</span> cmd <span class="keyword">in</span> cmds:</span><br><span class="line">        Document.execute(cmd)</span><br><span class="line">        print(Document.value)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(cmds)):</span><br><span class="line">        Document.undo()</span><br><span class="line">        print(Document.value)</span><br></pre></td></tr></table></figure></p>
-<h4 id="Chain-Of-Responsibility"><a href="#Chain-Of-Responsibility" class="headerlink" title="Chain Of Responsibility"></a>Chain Of Responsibility</h4><p>链式Handler处理请求，某一个处理成功就返回。用Chain来动态构造Handler序列。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Handler</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.successor = <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">handle</span><span class="params">(self, data)</span>:</span></span><br><span class="line">        res = self._handle(data)</span><br><span class="line">        <span class="keyword">if</span> res:</span><br><span class="line">            <span class="keyword">return</span> res</span><br><span class="line">        <span class="keyword">if</span> self.successor:</span><br><span class="line">            <span class="keyword">return</span> self.successor.handle(data)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_handle</span><span class="params">(self, data)</span>:</span></span><br><span class="line">        <span class="keyword">raise</span> NotImplementedError</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">link</span><span class="params">(self, handler)</span>:</span></span><br><span class="line">        self.successor = handler</span><br><span class="line">        <span class="keyword">return</span> handler</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DictHandler</span><span class="params">(Handler)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_handle</span><span class="params">(self, data)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> isinstance(data, dict):</span><br><span class="line">            print(<span class="string">"handled by %s"</span> % self)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ListHandler</span><span class="params">(Handler)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_handle</span><span class="params">(self, data)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> isinstance(data, list):</span><br><span class="line">            print(<span class="string">"handled by %s"</span> % self)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    h = DictHandler()</span><br><span class="line">    h.link(ListHandler()).link(Handler())</span><br><span class="line">    ret = h.handle([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">    ret = h.handle(&#123;<span class="number">1</span>: <span class="number">2</span>&#125;)</span><br></pre></td></tr></table></figure></p>
-<h4 id="Chaining-Method"><a href="#Chaining-Method" class="headerlink" title="Chaining Method"></a>Chaining Method</h4><p>链式反应，就这样一直点下去。很多Query构造函数是这样，API更好用。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Player</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        self.pos = (<span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">move</span><span class="params">(self, pos)</span>:</span></span><br><span class="line">        self.pos = pos</span><br><span class="line">        print(<span class="string">"move to %s, %s"</span> % self.pos)</span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">say</span><span class="params">(self, text)</span>:</span></span><br><span class="line">        print(text)</span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">home</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.pos = (<span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">        print(<span class="string">"I am home"</span>)</span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    p = Player(<span class="string">'liuxin'</span>)</span><br><span class="line">    p.move((<span class="number">1</span>, <span class="number">1</span>)).say(<span class="string">"haha"</span>).move((<span class="number">2</span>, <span class="number">3</span>)).home().say(<span class="string">"go to sleep"</span>)</span><br></pre></td></tr></table></figure>
-<h4 id="Visitor"><a href="#Visitor" class="headerlink" title="Visitor"></a>Visitor</h4><p>Visitor模式的目的是不改变原来的类，用另一个类来实现一些接口。下面的例子用Visitor模式实现了两种节点遍历的方法。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Node</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, children=<span class="params">()</span>)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.children = list(children)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'&lt;Node %s&gt;'</span> % self.name</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Visitor</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">visit</span><span class="params">(cls, node)</span>:</span></span><br><span class="line">        <span class="keyword">yield</span> node</span><br><span class="line">        <span class="keyword">for</span> child <span class="keyword">in</span> node.children:</span><br><span class="line">            <span class="keyword">yield</span> child</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">visit2</span><span class="params">(cls, node)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> child <span class="keyword">in</span> node.children:</span><br><span class="line">            <span class="keyword">yield</span> child</span><br><span class="line">        <span class="keyword">yield</span> node</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    root = Node(<span class="string">'root'</span>, (Node(<span class="string">'a'</span>), Node(<span class="string">'b'</span>)))</span><br><span class="line">    visitor = Visitor()</span><br><span class="line">    <span class="keyword">for</span> node <span class="keyword">in</span> visitor.visit(root):</span><br><span class="line">        print(node)</span><br><span class="line">    <span class="keyword">for</span> node <span class="keyword">in</span> visitor.visit2(root):</span><br><span class="line">        print(node)</span><br></pre></td></tr></table></figure></p>
-<h4 id="Observer"><a href="#Observer" class="headerlink" title="Observer"></a>Observer</h4><p>当一个对象发生状态变化时，需要更新其他对象，用观察者模式来解耦这些对象，最小知识原则。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Observable</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self._observers = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">attach</span><span class="params">(self, observer)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> observer <span class="keyword">not</span> <span class="keyword">in</span> self._observers:</span><br><span class="line">            self._observers.append(observer)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">detach</span><span class="params">(self, observer)</span>:</span></span><br><span class="line">        self._observers.remove(observer)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">notify</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> observer <span class="keyword">in</span> self._observers:</span><br><span class="line">            observer.update(self)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Observer</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(self, observable)</span>:</span></span><br><span class="line">        print(<span class="string">'updating %s by %s'</span> % (self, observable))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    clock = Observable()</span><br><span class="line">    user1 = Observer()</span><br><span class="line">    user2 = Observer()</span><br><span class="line">    clock.attach(user1)</span><br><span class="line">    clock.attach(user2)</span><br><span class="line">    clock.notify()</span><br></pre></td></tr></table></figure></p>
-<p>上面的例子演示了最简单的实现，通常在实际程序中观察者模式会在不同线程中，要注意线程安全的问题。</p>
-<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
-<li><a href="https://github.com/faif/python-patterns" target="_blank" rel="noopener">python-patterns</a></li>
-<li><a href="http://python-3-patterns-idioms-test.readthedocs.io/en/latest/index.html" target="_blank" rel="noopener">python-3-patterns-idioms</a></li>
-<li><a href="http://www.uml.org.cn/sjms/201211023.asp" target="_blank" rel="noopener">设计模式六大原则</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/28737945" target="_blank" rel="noopener">设计模式一句话总结</a></li>
-</ul>
-
+<li>即：子类可以扩展父类的功能，但不能改变父类原有的功能
+          <!--noindex-->
           
+            <div class="post-button text-center">
+              <a class="btn" href="/2018/06/20/py-patterns/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
         
       
-    </div>
+    </li></ul></li></ol></div>
+
+    
+      
+
 
     
 
@@ -1441,6 +1360,8 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image" src="/images/qiyu.jpg" alt="meteorix">
+            
               <p class="site-author-name" itemprop="name">meteorix</p>
               <div class="site-description motion-element" itemprop="description"></div>
           </div>
@@ -1466,6 +1387,10 @@
                 <div class="site-state-item site-state-tags">
                   
                     
+                      <a href="/tags/">
+                    
+                  
+                    
                     
                       
                     
@@ -1475,7 +1400,7 @@
                     
                     <span class="site-state-item-count">3</span>
                     <span class="site-state-item-name">tags</span>
-                  
+                  </a>
                 </div>
               
             </nav>
@@ -1485,6 +1410,21 @@
 
           
 
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/meteorix" title="GitHub &rarr; https://github.com/meteorix" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            </div>
           
 
           
@@ -1535,7 +1475,7 @@
 
 
 
-  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.1.0</div>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.1.0</div>
 
 
 
@@ -1623,7 +1563,9 @@
   
 
 
-  <script src="/js/schemes/muse.js?v=7.1.0"></script>
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
 
 
 
