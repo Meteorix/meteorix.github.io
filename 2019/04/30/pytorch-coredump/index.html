@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.1.0',
+    sidebar: {"position":"left","display":"always","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="两个算法小哥写了个flask的web服务器，跑ocr的服务。单个请求是好的，多请求就崩了, log就显示： Segmentation fault (core dumped)    “wtf is core dump?”   just google it, 简单说就是程序崩溃之后dump出来的一些信息  调试到了凌晨2点，加了一堆log，还是没有找到原因，看起来很随机。第二天找到我：  pytho">
+<meta name="keywords" content="Python,机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记一次pytorch的coredump调试">
+<meta property="og:url" content="https://meteorix.github.io/2019/04/30/pytorch-coredump/index.html">
+<meta property="og:site_name" content="Meteorix&#39;s Blog">
+<meta property="og:description" content="两个算法小哥写了个flask的web服务器，跑ocr的服务。单个请求是好的，多请求就崩了, log就显示： Segmentation fault (core dumped)    “wtf is core dump?”   just google it, 简单说就是程序崩溃之后dump出来的一些信息  调试到了凌晨2点，加了一堆log，还是没有找到原因，看起来很随机。第二天找到我：  pytho">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-04-30T11:52:57.696Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="记一次pytorch的coredump调试">
+<meta name="twitter:description" content="两个算法小哥写了个flask的web服务器，跑ocr的服务。单个请求是好的，多请求就崩了, log就显示： Segmentation fault (core dumped)    “wtf is core dump?”   just google it, 简单说就是程序崩溃之后dump出来的一些信息  调试到了凌晨2点，加了一堆log，还是没有找到原因，看起来很随机。第二天找到我：  pytho">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://meteorix.github.io/2019/04/30/pytorch-coredump/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>记一次pytorch的coredump调试 | Meteorix's Blog</title>
+  
+
+
+
+
+  <script async src="//www.googletagmanager.com/gtag/js?id=UA-138766747-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-138766747-1');
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Meteorix's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://meteorix.github.io/2019/04/30/pytorch-coredump/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="meteorix">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/qiyu.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Meteorix's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">记一次pytorch的coredump调试
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-04-30 19:47:32 / Modified: 19:52:57" itemprop="dateCreated datePublished" datetime="2019-04-30T19:47:32+08:00">2019-04-30</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ol>
+<li><p>两个算法小哥写了个flask的web服务器，跑ocr的服务。单个请求是好的，多请求就崩了, log就显示：<br> <code>Segmentation fault (core dumped)</code></p>
+<blockquote>
+<p>  “wtf is core dump?”</p>
+</blockquote>
+<p> just google it, 简单说就是程序崩溃之后dump出来的一些信息</p>
+</li>
+<li><p>调试到了凌晨2点，加了一堆log，还是没有找到原因，看起来很随机。第二天找到我：</p>
+<blockquote>
+<p>python coredump了怎么办？</p>
+</blockquote>
+</li>
+<li><p>为了debug这个coredump，先打开系统设置</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ulimit -c unlimited</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>再次制造coredump，在当前目录下就产生了一个4G的core文件</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-rw------- 1 liuxin root 4.2G 4月  29 14:21 core</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>core文件就是保存了crash时候的所有信息，调用栈、线程、内存等。然后运用我们的linux c++开发经验，可以知道用gdb来调试coredump文件</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gdb &lt;executable&gt; &lt;coredump file&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>等等，这里我们是python程序崩了，为什么没有traceback？因为在调用到pytorch的c++代码时，直接segmentfault，并没能等到python的退出机制打印出traceback，直接崩了。但是操作系统能产生coredump文件，这是我们的救命稻草。</p>
+</li>
+</ol>
+<a id="more"></a>
+<ol start="7">
+<li><p>直接用gdb调试python的coredump文件</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gdb python ./core</span><br></pre></td></tr></table></figure>
+<p> 显示一大堆毫无意义的信息，因为你的python还没有装上“符号文件”，操作系统的栈里面的地址需要对上符号信息，才能解析出c/c++代码</p>
+</li>
+<li><p>找到你的python版本对应的符号文件，装上</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install python3.6-dbg</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>然后就能够看到c栈了</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">(gdb) bt</span><br><span class="line">#0  0x00007fffd721ec4b in ?? () from /usr/lib/x86_64-linux-gnu/libcuda.so.1</span><br><span class="line">#1  0x00007fffd734ed06 in ?? () from /usr/lib/x86_64-linux-gnu/libcuda.so.1</span><br><span class="line">#2  0x00007fffd7138a46 in ?? () from /usr/lib/x86_64-linux-gnu/libcuda.so.1</span><br><span class="line">#3  0x00007fffd7138c73 in ?? () from /usr/lib/x86_64-linux-gnu/libcuda.so.1</span><br><span class="line">#4  0x00007fffd7290f40 in cuLaunchKernel () from /usr/lib/x86_64-linux-gnu/libcuda.so.1</span><br><span class="line">#5  0x00007fffa72f2dcb in cudart::cudaApiLaunchCommon(void const*, bool) ()</span><br><span class="line">   from /home/liuxin/venv/lib/python3.6/site-packages/torch/lib/libcaffe2_gpu.so</span><br><span class="line">#6  0x00007fffa73105a8 in cudaLaunch () from /home/liuxin/venv/lib/python3.6/site-packages/torch/lib/libcaffe2_gpu.so</span><br><span class="line">#7  0x00007fffa73c70f1 in cublasStatus_t cublasGemv&lt;float, float, float, 128, 4, 16, 4, 4&gt;(cublasContext*, cublasOperation_t, int, int, float const*, float const*, int, float const*, int, float const*, float*, int) ()</span><br><span class="line">   from /home/liuxin/venv/lib/python3.6/site-packages/torch/lib/libcaffe2_gpu.so</span><br><span class="line">#8  0x00007fffa73e0bae in cublasSgemmRecursiveEntry(cublasContext*, int, int, int, int, int, float const*, float const*, int, float const*, int, float const*, float*, int) () from /home/liuxin/venv/lib/python3.6/site-packages/torch/lib/libcaffe2_gpu.so</span><br><span class="line">#9  0x00007fffa744f8dd in cublasSgemmEx_internal(cublasContext*, cublasOperation_t, cublasOperation_t, int, int, int, float const*, void const*, cudaDataType_t, int, void const*, cudaDataType_t, int, float const*, void*, cudaDataType_t, int, bool, bool) ()</span><br><span class="line">   from /home/liuxin/venv/lib/python3.6/site-packages/torch/lib/libcaffe2_gpu.so</span><br><span class="line">#10 0x00007fffa7459ad2 in cublasSgemmExRecursiveEntry(cublasContext*, int, int, int, int, int, float const*, void const*, cudaDataType_t, int, void const*, cudaDataType_t, int, float const*, void*, cudaDataType_t, int, cublasGemmAlgo_t, int, int) ()</span><br><span class="line">   from /home/liuxin/venv/lib/python3.6/site-packages/torch/lib/libcaffe2_gpu.so</span><br><span class="line">  </span><br><span class="line">...下面还有200多行...</span><br></pre></td></tr></table></figure>
+<p> 通过上面的c栈，大概能看出是崩在了pytoch的rnn模块。但是，我们的python代码哪里出问题了呢？</p>
+</li>
+<li><p>这时候需要找的是python栈在哪里呢？很幸运的是，python是c写的，通过c栈和python的符合信息，我们能反解出python调用栈！而且gdb-python直接帮我们做好了这件事。</p>
+<p>在python对应版本的源码中找<code>Toos/gdb/libpython.py</code></p>
+<blockquote>
+<p><a href="https://github.com/python/cpython/tree/3.6/Tools/gdb" target="_blank" rel="noopener">https://github.com/python/cpython/tree/3.6/Tools/gdb</a></p>
+</blockquote>
+<p>下载下来，然后在gdb中使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">(gdb) source libpython.py</span><br><span class="line">(gdb) py-bt</span><br><span class="line">Traceback (most recent call first):</span><br><span class="line">  &lt;built-in method _cudnn_rnn of type object at remote 0x7fffd51dd640&gt;</span><br><span class="line">  File &quot;/home/liuxin/venv/lib/python3.6/site-packages/torch/nn/_functions/rnn.py&quot;, line 288, in forward</span><br><span class="line">    dropout_ts)</span><br><span class="line">  File &quot;/home/liuxin/venv/lib/python3.6/site-packages/torch/nn/_functions/rnn.py&quot;, line 324, in forward</span><br><span class="line">    return func(input, *fargs, **fkwargs)</span><br><span class="line">  File &quot;/home/liuxin/venv/lib/python3.6/site-packages/torch/nn/modules/rnn.py&quot;, line 192, in forward</span><br><span class="line">    output, hidden = func(input, self.all_weights, hx, batch_sizes)</span><br><span class="line">  File &quot;/home/liuxin/venv/lib/python3.6/site-packages/torch/nn/modules/module.py&quot;, line 477, in __call__</span><br><span class="line">    result = self.forward(*input, **kwargs)</span><br><span class="line">  File &quot;/home/liuxin/shannon_vision/shannon_vision_models/shannon_vision_nanjing_bank/crnn/master/models/crnn.py&quot;, line 69, in forward</span><br><span class="line">    recurrent, _ = self.rnn(x)</span><br><span class="line">  File &quot;/home/liuxin/venv/lib/python3.6/site-packages/torch/nn/modules/module.py&quot;, line 477, in __call__</span><br><span class="line">    result = self.forward(*input, **kwargs)</span><br><span class="line">  File &quot;/home/liuxin/venv/lib/python3.6/site-packages/torch/nn/modules/container.py&quot;, line 91, in forward</span><br><span class="line">    input = module(input)</span><br><span class="line">  File &quot;/home/liuxin/venv/lib/python3.6/site-packages/torch/nn/modules/module.py&quot;, line 477, in __call__</span><br><span class="line">    result = self.forward(*input, **kwargs)</span><br><span class="line">  File &quot;/home/liuxin/shannon_vision/shannon_vision_models/shannon_vision_nanjing_bank/crnn/master/models/crnn.py&quot;, line 57, in forward</span><br><span class="line">    out = self.rnn(conv)</span><br><span class="line">  File &quot;/home/liuxin/venv/lib/python3.6/site-packages/torch/nn/modules/module.py&quot;, line 477, in __call__</span><br><span class="line">    result = self.forward(*input, **kwargs)</span><br><span class="line">  File &quot;/home/liuxin/shannon_vision/shannon_vision_models/shannon_vision_nanjing_bank/crnn/master/models/recognizer.py&quot;, line 65, in recognize</span><br><span class="line">    pred_matrix = self.model(charline_image)</span><br><span class="line">  File &quot;xiang_server.py&quot;, line 93, in run_crnn_server</span><br><span class="line">    ocr_pred, matrix = recognizer.recognize(img)</span><br><span class="line">  File &quot;/home/liuxin/venv/lib/python3.6/site-packages/flask/app.py&quot;, line 1799, in dispatch_request</span><br><span class="line"> </span><br><span class="line">...下面还有三十多行...</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>找到问题了，原来是这个<code>recognize</code>函数，让我们来fix it。通过”经验”，我们猜到这是多线程调用gpu代码导致的问题，先试试加锁</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lock = threading.Lock()</span><br><span class="line">...</span><br><span class="line">with lock:</span><br><span class="line">    ocr_pred, matrix = recognizer.recognize(img)</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>果然加了锁就再也没有诡异的coredump了，这个故事告诉我们：</p>
+<blockquote>
+<p>gpu代码调用多半不是thread-safe的，加个线程锁比较安全。</p>
+</blockquote>
+</li>
+<li><p>到底pytorch的函数是不是线程安全的呢？我们的算法小哥哥构造了一段代码验证:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line">from torch import nn</span><br><span class="line">import torch</span><br><span class="line">from threading import Thread</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class BidirectionalLSTM(nn.Module):</span><br><span class="line">    &quot;&quot;&quot;构建一个简单的网络&quot;&quot;&quot;</span><br><span class="line">    def __init__(self, n_in, n_hidden, n_out):</span><br><span class="line">        super(BidirectionalLSTM, self).__init__()</span><br><span class="line">        self.rnn = nn.LSTM(n_in, n_hidden, bidirectional=True)</span><br><span class="line">        self.embedding = nn.Linear(n_hidden * 2, n_out)</span><br><span class="line"></span><br><span class="line">    def forward(self, x):</span><br><span class="line">        recurrent, _ = self.rnn(x)</span><br><span class="line">        t, b, h = recurrent.size()</span><br><span class="line">        t_rec = recurrent.view(t * b, h)</span><br><span class="line">        out = self.embedding(t_rec)  # [t * b, n_out]</span><br><span class="line">        out = out.view(t, b, -1)</span><br><span class="line"></span><br><span class="line">        return out</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">lstm = BidirectionalLSTM(256, 256, 256)</span><br><span class="line">x = torch.randn(12,100,256)</span><br><span class="line">device = torch.device(&apos;cuda:0&apos;)</span><br><span class="line">lstm = lstm.to(device)</span><br><span class="line">x = x.to(device)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def print_time(threadName):</span><br><span class="line">    count = 0</span><br><span class="line">    while count &lt; 1000:</span><br><span class="line">        lstm(x)</span><br><span class="line">        count += 1</span><br><span class="line">        print(threadName, &quot;:&quot;, count)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def run_rnn_multi_threaded():</span><br><span class="line">    for i in range(5):</span><br><span class="line">        name = &quot;Thread-%d&quot; % i</span><br><span class="line">        t = Thread(target=print_time, args=(name,), name=name)</span><br><span class="line">        t.start()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    run_rnn_multi_threaded()</span><br></pre></td></tr></table></figure>
+<p>运行没多久果然coredump了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">Thread-0 : 79</span><br><span class="line">Thread-4 : 74</span><br><span class="line">Thread-3 : 74</span><br><span class="line">Thread-2 : 74</span><br><span class="line">Thread-1 : 76</span><br><span class="line">Thread-0 : 80</span><br><span class="line">Thread-4 : 75</span><br><span class="line">Thread-3 : 75</span><br><span class="line">Thread-2 : 75</span><br><span class="line">Thread-1 : 77</span><br><span class="line">Thread-0 : 81</span><br><span class="line">Segmentation fault (core dumped)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查了下<code>pytorch thread safety</code>，很多答案说默认是线程安全的。于是我提了个issue给他们 <a href="https://github.com/pytorch/pytorch/issues/19913" target="_blank" rel="noopener">https://github.com/pytorch/pytorch/issues/19913</a>  静待回复</p>
+</li>
+<li><p>虽然最终只是两行代码临时解决，通过这次调试经历，需要涨的知识点：core dump/gdb/symbol/thread-safety，以及python调试的终极核武器：<a href="https://github.com/Meteorix/meteorix-blog/blob/master/_posts/gdbpython.md" target="_blank" rel="noopener">https://github.com/Meteorix/meteorix-blog/blob/master/_posts/gdbpython.md</a></p>
+<blockquote>
+<p>在windows上我们更有宇宙最强的visual studio，提供了等价的python/c混合调试</p>
+</blockquote>
+</li>
+<li><p>关于这个问题，还有很多未解之谜 to be continued…</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+      
+
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/机器学习/" rel="tag"># 机器学习</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/13/vsdebugpycpp/" rel="next" title="vs2017混合调试py/c++">
+                <i class="fa fa-chevron-left"></i> vs2017混合调试py/c++
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/qiyu.jpg" alt="meteorix">
+            
+              <p class="site-author-name" itemprop="name">meteorix</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/meteorix" title="GitHub &rarr; https://github.com/meteorix" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">meteorix</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.1.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

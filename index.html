@@ -314,6 +314,182 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://meteorix.github.io/2019/04/30/pytorch-coredump/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="meteorix">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/qiyu.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Meteorix's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/04/30/pytorch-coredump/" class="post-title-link" itemprop="url">记一次pytorch的coredump调试</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-04-30 19:47:32 / Modified: 19:52:57" itemprop="dateCreated datePublished" datetime="2019-04-30T19:47:32+08:00">2019-04-30</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <ol>
+<li><p>两个算法小哥写了个flask的web服务器，跑ocr的服务。单个请求是好的，多请求就崩了, log就显示：<br> <code>Segmentation fault (core dumped)</code></p>
+<blockquote>
+<p>  “wtf is core dump?”</p>
+</blockquote>
+<p> just google it, 简单说就是程序崩溃之后dump出来的一些信息</p>
+</li>
+<li><p>调试到了凌晨2点，加了一堆log，还是没有找到原因，看起来很随机。第二天找到我：</p>
+<blockquote>
+<p>python coredump了怎么办？</p>
+</blockquote>
+</li>
+<li><p>为了debug这个coredump，先打开系统设置</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ulimit -c unlimited</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>再次制造coredump，在当前目录下就产生了一个4G的core文件</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-rw------- 1 liuxin root 4.2G 4月  29 14:21 core</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>core文件就是保存了crash时候的所有信息，调用栈、线程、内存等。然后运用我们的linux c++开发经验，可以知道用gdb来调试coredump文件</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gdb &lt;executable&gt; &lt;coredump file&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>等等，这里我们是python程序崩了，为什么没有traceback？因为在调用到pytorch的c++代码时，直接segmentfault，并没能等到python的退出机制打印出traceback，直接崩了。但是操作系统能产生coredump文件，这是我们的救命稻草。</p>
+</li>
+</ol>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/04/30/pytorch-coredump/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+      
+
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://meteorix.github.io/2019/02/13/vsdebugpycpp/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1373,7 +1549,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-count">7</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -1398,7 +1574,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">3</span>
+                      
+                    
+                    <span class="site-state-item-count">4</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
