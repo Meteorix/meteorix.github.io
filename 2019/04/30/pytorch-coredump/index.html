@@ -104,7 +104,7 @@
 <meta property="og:site_name" content="Meteorix&#39;s Blog">
 <meta property="og:description" content="两个算法小哥写了个flask的web服务器，跑ocr的服务。单个请求是好的，多请求就崩了, log就显示： Segmentation fault (core dumped)    “wtf is core dump?”   just google it, 简单说就是程序崩溃之后dump出来的一些信息  调试到了凌晨2点，加了一堆log，还是没有找到原因，看起来很随机。第二天找到我：  pytho">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-04-30T11:52:57.696Z">
+<meta property="og:updated_time" content="2019-05-03T12:38:01.987Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="记一次pytorch的coredump调试">
 <meta name="twitter:description" content="两个算法小哥写了个flask的web服务器，跑ocr的服务。单个请求是好的，多请求就崩了, log就显示： Segmentation fault (core dumped)    “wtf is core dump?”   just google it, 简单说就是程序崩溃之后dump出来的一些信息  调试到了凌晨2点，加了一堆log，还是没有找到原因，看起来很随机。第二天找到我：  pytho">
@@ -361,12 +361,24 @@
                 
               
 
-              <time title="Created: 2019-04-30 19:47:32 / Modified: 19:52:57" itemprop="dateCreated datePublished" datetime="2019-04-30T19:47:32+08:00">2019-04-30</time>
+              <time title="Created: 2019-04-30 19:47:32" itemprop="dateCreated datePublished" datetime="2019-04-30T19:47:32+08:00">2019-04-30</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-05-03 20:38:01" itemprop="dateModified" datetime="2019-05-03T20:38:01+08:00">2019-05-03</time>
               
             
           </span>
@@ -457,12 +469,14 @@
 <p>运行没多久果然coredump了</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">Thread-0 : 79</span><br><span class="line">Thread-4 : 74</span><br><span class="line">Thread-3 : 74</span><br><span class="line">Thread-2 : 74</span><br><span class="line">Thread-1 : 76</span><br><span class="line">Thread-0 : 80</span><br><span class="line">Thread-4 : 75</span><br><span class="line">Thread-3 : 75</span><br><span class="line">Thread-2 : 75</span><br><span class="line">Thread-1 : 77</span><br><span class="line">Thread-0 : 81</span><br><span class="line">Segmentation fault (core dumped)</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>查了下<code>pytorch thread safety</code>，很多答案说默认是线程安全的。于是我提了个issue给他们 <a href="https://github.com/pytorch/pytorch/issues/19913" target="_blank" rel="noopener">https://github.com/pytorch/pytorch/issues/19913</a>  静待回复</p>
+<li><p>查了下<code>pytorch thread safety</code>，很多答案说默认是线程安全的。于是我提了个issue给官方 <a href="https://github.com/pytorch/pytorch/issues/19913" target="_blank" rel="noopener">https://github.com/pytorch/pytorch/issues/19913</a> 静待回复</p>
 </li>
-<li><p>虽然最终只是两行代码临时解决，通过这次调试经历，需要涨的知识点：core dump/gdb/symbol/thread-safety，以及python调试的终极核武器：<a href="https://github.com/Meteorix/meteorix-blog/blob/master/_posts/gdbpython.md" target="_blank" rel="noopener">https://github.com/Meteorix/meteorix-blog/blob/master/_posts/gdbpython.md</a></p>
+<li><p>虽然最终只是两行代码临时解决，通过这次调试经历，需要涨的知识点：core dump/gdb/debug symbol/thread-safety，以及python调试的终极核武器：<a href="https://github.com/Meteorix/meteorix-blog/blob/master/_posts/gdbpython.md" target="_blank" rel="noopener">https://github.com/Meteorix/meteorix-blog/blob/master/_posts/gdbpython.md</a></p>
 <blockquote>
 <p>在windows上我们更有宇宙最强的visual studio，提供了等价的python/c混合调试</p>
 </blockquote>
+</li>
+<li><p>没过两天，官方回复了issue：pytorch新版本修复了很多线程安全问题。于是我升级pytorch 1.1，用上面的代码验证，果然没问题了。为了提升web服务器的性能，后面我们升级pytorch版本，就可以去掉那个令人不爽的锁了。</p>
 </li>
 <li><p>关于这个问题，还有很多未解之谜 to be continued…</p>
 </li>
