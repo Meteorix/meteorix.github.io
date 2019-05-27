@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.1.0',
+    sidebar: {"position":"left","display":"always","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Pyflame是uber开源的一个python性能profiler。  没有profile的优化就是耍流氓  说起python，被吐槽最多的就是慢。根据上面的名言，首先我们需要一个性能profiler。 profiler的两种原理profile工具基本分成两种思路：  插桩  这个理解起来非常直白，在每个函数的开始和结束时计时，然后统计每个函数的执行时间。python自带的Profile和cPro">
+<meta name="keywords" content="Python,C++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pyflame解析和扩展">
+<meta property="og:url" content="https://meteorix.github.io/2019/05/24/pyflame/index.html">
+<meta property="og:site_name" content="Meteorix&#39;s Blog">
+<meta property="og:description" content="Pyflame是uber开源的一个python性能profiler。  没有profile的优化就是耍流氓  说起python，被吐槽最多的就是慢。根据上面的名言，首先我们需要一个性能profiler。 profiler的两种原理profile工具基本分成两种思路：  插桩  这个理解起来非常直白，在每个函数的开始和结束时计时，然后统计每个函数的执行时间。python自带的Profile和cPro">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://meteorix.github.io/images/pyflame/profile_py.svg">
+<meta property="og:image" content="https://meteorix.github.io/images/pyflame/Python-Thread-State.png">
+<meta property="og:image" content="https://meteorix.github.io/images/pyflame/profile_c.svg">
+<meta property="og:updated_time" content="2019-05-27T10:17:27.525Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Pyflame解析和扩展">
+<meta name="twitter:description" content="Pyflame是uber开源的一个python性能profiler。  没有profile的优化就是耍流氓  说起python，被吐槽最多的就是慢。根据上面的名言，首先我们需要一个性能profiler。 profiler的两种原理profile工具基本分成两种思路：  插桩  这个理解起来非常直白，在每个函数的开始和结束时计时，然后统计每个函数的执行时间。python自带的Profile和cPro">
+<meta name="twitter:image" content="https://meteorix.github.io/images/pyflame/profile_py.svg">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://meteorix.github.io/2019/05/24/pyflame/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Pyflame解析和扩展 | Meteorix's Blog</title>
+  
+
+
+
+
+  <script async src="//www.googletagmanager.com/gtag/js?id=UA-138766747-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-138766747-1');
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Meteorix's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://meteorix.github.io/2019/05/24/pyflame/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="meteorix">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/qiyu.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Meteorix's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Pyflame解析和扩展
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-05-24 20:12:22" itemprop="dateCreated datePublished" datetime="2019-05-24T20:12:22+08:00">2019-05-24</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-05-27 18:17:27" itemprop="dateModified" datetime="2019-05-27T18:17:27+08:00">2019-05-27</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a href="https://github.com/uber/pyflame" target="_blank" rel="noopener">Pyflame</a>是uber开源的一个python性能profiler。</p>
+<blockquote>
+<p>没有profile的优化就是耍流氓</p>
+</blockquote>
+<p>说起python，被吐槽最多的就是慢。根据上面的名言，首先我们需要一个性能profiler。</p>
+<h1 id="profiler的两种原理"><a href="#profiler的两种原理" class="headerlink" title="profiler的两种原理"></a>profiler的两种原理</h1><p>profile工具基本分成两种思路：</p>
+<ol>
+<li><p>插桩</p>
+<p> 这个理解起来非常直白，在每个函数的开始和结束时计时，然后统计每个函数的执行时间。python自带的<code>Profile</code>和<code>cProfile</code>模块就是这个原理。但是插桩会有两个问题，一是插桩计时本身带来的性能消耗<code>overhead</code>极大，二是对一个正在运行的程序没法插桩。</p>
+</li>
+<li><p>采样</p>
+<p> 采样是注入正在运行的进程，高频地去探测函数调用栈。根据大数定理，探测到次数越多的函数运行时间越长。pyflame正是基于采样的原理。统计结果用另一个神器——火焰图<a href="http://www.brendangregg.com/flamegraphs.html" target="_blank" rel="noopener">flamegraph</a>展示，我们就可以完整地了解cpu运行状态。</p>
+</li>
+</ol>
+<h1 id="使用pyflame和火焰图"><a href="#使用pyflame和火焰图" class="headerlink" title="使用pyflame和火焰图"></a>使用pyflame和火焰图</h1><p>官方提供了pyflame源码，需要自己编译对应python版本，然后调用flamegraph生成火焰图svg。具体可以看<a href="https://pyflame.readthedocs.io/en/latest/" target="_blank" rel="noopener">官方文档</a>。为了方便自己人使用，我写了个pyflame-server。</p>
+<a id="more"></a>
+<h2 id="pyflame-server"><a href="#pyflame-server" class="headerlink" title="pyflame-server"></a>pyflame-server</h2><p><a href="https://github.com/Meteorix/pyflame-server" target="_blank" rel="noopener">https://github.com/Meteorix/pyflame-server</a></p>
+<p>pyflame-server使用步骤很简单：</p>
+<ol>
+<li>下载编译好的pyflame二进制文件，支持py2.6/2.7/3.4/3.5/3.6/3.7</li>
+<li>pyflame启动python进程，或者attach到正在运行的进程，得到profile.txt</li>
+<li>上传profile.txt，查看火焰图页面</li>
+</ol>
+<p>内部地址<a href="http://172.22.22.230:5000/" target="_blank" rel="noopener">http://172.22.22.230:5000/</a></p>
+<p>pyflame-server是基于flask简单的web项目，欢迎参与开发。</p>
+<h2 id="如何读图"><a href="#如何读图" class="headerlink" title="如何读图"></a>如何读图</h2><ul>
+<li>横向是采样次数的占比，越长的span表示调用次数越多，即时间消耗越多</li>
+<li>纵向是函数调用栈，从底向上，最下层是可执行文件的入口</li>
+<li>每个span里面显示了文件路径、函数名、行号、采样次数等信息，可以自己缩放svg图看看。</li>
+</ul>
+<p>以下面的代码为例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> 1 import time</span><br><span class="line"> 2</span><br><span class="line"> 3</span><br><span class="line"> 4 def add(a, b):</span><br><span class="line"> 5    return a + b</span><br><span class="line"> 6</span><br><span class="line"> 7</span><br><span class="line"> 8 def sum():</span><br><span class="line"> 9    count = 1</span><br><span class="line">10    for i in range(10000000):</span><br><span class="line">11        count = add(count, i)</span><br><span class="line">12    print(count)</span><br><span class="line">13    time.sleep(1)</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16 sum()</span><br></pre></td></tr></table></figure>
+<p><img src="/images/pyflame/profile_py.svg" alt="image"></p>
+<p>从下往上看：</p>
+<ul>
+<li>2/3的时间花在了第16行的<code>sum</code>函数，1/3的时间是<code>idle</code>，即<code>sleep</code>的时候python释放了GIL。</li>
+<li><code>sum</code>函数第10行的for循环占用了一小段时间，第11行的<code>add</code>占用了大量时间</li>
+<li>再往上<code>add</code>函数第5行只占用了一小段时间，说明大量时间被函数调用本身占用了</li>
+</ul>
+<p>这样profile之后，如何进行优化就一目了然了吧。实际项目中，经过这样简单的profile，我们将一个NLP预处理的任务优化了70%的性能。</p>
+<h2 id="即时维护的分支"><a href="#即时维护的分支" class="headerlink" title="即时维护的分支"></a>即时维护的分支</h2><p>Uber写pyflame的哥们离职了，还没人接手这个项目。于是我自己维护了一个分支，做了几点微小的工作：</p>
+<ol>
+<li>修复py2.7编译脚本</li>
+<li>修复py3.7兼容性问题，感谢pr</li>
+<li>修复anaconda的兼容性问题，感谢另一个pr</li>
+<li>增加dockerfile，enable所有abi，目前同时支持py2.6/2.7/3.4-3.7</li>
+<li>试图增加c/c++ profile</li>
+</ol>
+<h1 id="How-magic-happens"><a href="#How-magic-happens" class="headerlink" title="How magic happens"></a>How magic happens</h1><p>Uber官方博客给了一篇<a href="https://eng.uber.com/pyflame/" target="_blank" rel="noopener">由浅入深的讲解</a>，这里简单提几个关键点。</p>
+<h2 id="ptrace"><a href="#ptrace" class="headerlink" title="ptrace"></a>ptrace</h2><p>linux操作系统提供了一个强大的系统调用<code>ptrace</code>，让你可以注入任意进程(有sudo权限就是可以为所欲为)查看当前的寄存器、运行栈和内存，甚至可以任意修改别人的进程。</p>
+<p>著名的<code>gdb</code>也是利用ptrace实现。比如打断点，其实就是保存了当前的运行状态，修改寄存器执行断点调试函数，之后恢复保存的运行状态继续运行。</p>
+<h2 id="PyThreadState"><a href="#PyThreadState" class="headerlink" title="PyThreadState"></a>PyThreadState</h2><p>有了ptrace之后，我们可以通过python的符号找到<code>PyThreadState</code>，也就是python虚拟机保存线程状态（包括线程调用栈）的地方。然后通过<code>PyThreadState</code>，拿到虚拟机中的py调用栈，遍历栈帧反解出python的函数名、所在文件行号等信息。后面就是高频采样和输出统计结果了。</p>
+<p><img src="/images/pyflame/Python-Thread-State.png" alt="PyThreadState"></p>
+<p>这部分如果想深入了解，可以看<a href="https://github.com/Meteorix/pysourcenote/blob/master/vm.md" target="_blank" rel="noopener">python虚拟机</a>这篇介绍。</p>
+<h1 id="如果我们想profile-c-c-呢"><a href="#如果我们想profile-c-c-呢" class="headerlink" title="如果我们想profile c/c++呢"></a>如果我们想profile c/c++呢</h1><p>目前深度学习程序多半是c++和python混合开发。有时候我们看到python里面的一行代码，其实底层调用了几十行c++代码。这时候为了搞清楚性能消耗到底在哪，我们需要同时profile python和c++。这里提供基于pyflame和libunwind的实现思路。</p>
+<h2 id="libunwind"><a href="#libunwind" class="headerlink" title="libunwind"></a>libunwind</h2><p><code>libunwind</code>是另一个开源的c++库，同样利用<code>ptrace</code>实现了远程注入和解c栈的接口。于是我们可以在一次ptrace断点时，同时解出c栈和py栈，然后用一个巧妙的办法将两个栈merge到一起。再修改一下<code>flamegraph</code>的配色，可以得到c/c++栈和py栈混合profile的效果。</p>
+<p><img src="/images/pyflame/profile_c.svg" alt="c/py混合profile"></p>
+<p>通过上面的火焰图，我们能清楚的看到每个python调用，实际上调用的底层c++函数。</p>
+<p>另一个好处是，python没有占用GIL的时候，我们可以看到c++的调用栈。</p>
+<p>to be continued…</p>
+
+      
+    </div>
+
+    
+      
+
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/C/" rel="tag"># C++</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/30/pytorch-coredump/" rel="next" title="记一次pytorch的coredump调试">
+                <i class="fa fa-chevron-left"></i> 记一次pytorch的coredump调试
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/qiyu.jpg" alt="meteorix">
+            
+              <p class="site-author-name" itemprop="name">meteorix</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/meteorix" title="GitHub &rarr; https://github.com/meteorix" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#profiler的两种原理"><span class="nav-number">1.</span> <span class="nav-text">profiler的两种原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用pyflame和火焰图"><span class="nav-number">2.</span> <span class="nav-text">使用pyflame和火焰图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#pyflame-server"><span class="nav-number">2.1.</span> <span class="nav-text">pyflame-server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何读图"><span class="nav-number">2.2.</span> <span class="nav-text">如何读图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#即时维护的分支"><span class="nav-number">2.3.</span> <span class="nav-text">即时维护的分支</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#How-magic-happens"><span class="nav-number">3.</span> <span class="nav-text">How magic happens</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ptrace"><span class="nav-number">3.1.</span> <span class="nav-text">ptrace</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PyThreadState"><span class="nav-number">3.2.</span> <span class="nav-text">PyThreadState</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如果我们想profile-c-c-呢"><span class="nav-number">4.</span> <span class="nav-text">如果我们想profile c/c++呢</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#libunwind"><span class="nav-number">4.1.</span> <span class="nav-text">libunwind</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">meteorix</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.1.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

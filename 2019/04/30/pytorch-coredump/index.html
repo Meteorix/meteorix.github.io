@@ -104,7 +104,7 @@
 <meta property="og:site_name" content="Meteorix&#39;s Blog">
 <meta property="og:description" content="两个算法小哥写了个flask的web服务器，跑ocr的服务。单个请求是好的，多请求就崩了, log就显示： Segmentation fault (core dumped)    “wtf is core dump?”   just google it, 简单说就是程序崩溃之后dump出来的一些信息  调试到了凌晨2点，加了一堆log，还是没有找到原因，看起来很随机。第二天找到我：  pytho">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-05-03T12:38:01.987Z">
+<meta property="og:updated_time" content="2019-05-24T12:05:13.777Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="记一次pytorch的coredump调试">
 <meta name="twitter:description" content="两个算法小哥写了个flask的web服务器，跑ocr的服务。单个请求是好的，多请求就崩了, log就显示： Segmentation fault (core dumped)    “wtf is core dump?”   just google it, 简单说就是程序崩溃之后dump出来的一些信息  调试到了凌晨2点，加了一堆log，还是没有找到原因，看起来很随机。第二天找到我：  pytho">
@@ -378,7 +378,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-05-03 20:38:01" itemprop="dateModified" datetime="2019-05-03T20:38:01+08:00">2019-05-03</time>
+                <time title="Modified: 2019-05-24 20:05:13" itemprop="dateModified" datetime="2019-05-24T20:05:13+08:00">2019-05-24</time>
               
             
           </span>
@@ -459,9 +459,9 @@
 </li>
 <li><p>找到问题了，原来是这个<code>recognize</code>函数，让我们来fix it。通过”经验”，我们猜到这是多线程调用gpu代码导致的问题，先试试加锁</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lock = threading.Lock()</span><br><span class="line">...</span><br><span class="line">with lock:</span><br><span class="line">    ocr_pred, matrix = recognizer.recognize(img)</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>果然加了锁就再也没有诡异的coredump了，这个故事告诉我们：</p>
+<p>果然加了锁就再也没有诡异的coredump了，于是我们猜想：</p>
 <blockquote>
-<p>gpu代码调用多半不是thread-safe的，加个线程锁比较安全。</p>
+<p>gpu代码调用可能不是thread-safe的，加个线程锁比较安全。</p>
 </blockquote>
 </li>
 <li><p>到底pytorch的函数是不是线程安全的呢？我们的算法小哥哥构造了一段代码验证:</p>
@@ -471,12 +471,12 @@
 </li>
 <li><p>查了下<code>pytorch thread safety</code>，很多答案说默认是线程安全的。于是我提了个issue给官方 <a href="https://github.com/pytorch/pytorch/issues/19913" target="_blank" rel="noopener">https://github.com/pytorch/pytorch/issues/19913</a> 静待回复</p>
 </li>
-<li><p>虽然最终只是两行代码临时解决，通过这次调试经历，需要涨的知识点：core dump/gdb/debug symbol/thread-safety，以及python调试的终极核武器：<a href="https://github.com/Meteorix/meteorix-blog/blob/master/_posts/gdbpython.md" target="_blank" rel="noopener">https://github.com/Meteorix/meteorix-blog/blob/master/_posts/gdbpython.md</a></p>
+<li><p>虽然只用两行代码就临时解决了问题，通过这次调试经历，我们可以获得知识点：core dump/gdb/debug symbol/thread-safety，以及python调试的终极武器：<a href="https://github.com/Meteorix/meteorix-blog/blob/master/_posts/gdbpython.md" target="_blank" rel="noopener">gdb-python</a></p>
 <blockquote>
-<p>在windows上我们更有宇宙最强的visual studio，提供了等价的python/c混合调试</p>
+<p>在windows上我们更有宇宙最强的visual studio，提供了等价的<a href="https://github.com/Meteorix/meteorix-blog/blob/master/_posts/vsdebugpycpp.md" target="_blank" rel="noopener">python/c混合调试</a></p>
 </blockquote>
 </li>
-<li><p>没过两天，官方回复了issue：pytorch新版本修复了很多线程安全问题。于是我升级pytorch 1.1，用上面的代码验证，果然没问题了。为了提升web服务器的性能，后面我们升级pytorch版本，就可以去掉那个令人不爽的锁了。</p>
+<li><p>两天后，官方回复issue：pytorch新版本修复了很多线程安全问题。于是我升级pytorch 1.1，用上面的代码验证，果然没问题。为了提升web服务器的性能，我们准备升级pytorch版本，就可以去掉那个令人不爽的锁。</p>
 </li>
 <li><p>关于这个问题，还有很多未解之谜 to be continued…</p>
 </li>
@@ -532,6 +532,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/24/pyflame/" rel="prev" title="Pyflame解析和扩展">
+                Pyflame解析和扩展 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -593,7 +597,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-count">8</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -620,7 +624,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">4</span>
+                      
+                    
+                    <span class="site-state-item-count">5</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>

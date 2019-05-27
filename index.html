@@ -314,6 +314,185 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://meteorix.github.io/2019/05/24/pyflame/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="meteorix">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/qiyu.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Meteorix's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/05/24/pyflame/" class="post-title-link" itemprop="url">Pyflame解析和扩展</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-05-24 20:12:22" itemprop="dateCreated datePublished" datetime="2019-05-24T20:12:22+08:00">2019-05-24</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-05-27 18:17:27" itemprop="dateModified" datetime="2019-05-27T18:17:27+08:00">2019-05-27</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><a href="https://github.com/uber/pyflame" target="_blank" rel="noopener">Pyflame</a>是uber开源的一个python性能profiler。</p>
+<blockquote>
+<p>没有profile的优化就是耍流氓</p>
+</blockquote>
+<p>说起python，被吐槽最多的就是慢。根据上面的名言，首先我们需要一个性能profiler。</p>
+<h1 id="profiler的两种原理"><a href="#profiler的两种原理" class="headerlink" title="profiler的两种原理"></a>profiler的两种原理</h1><p>profile工具基本分成两种思路：</p>
+<ol>
+<li><p>插桩</p>
+<p> 这个理解起来非常直白，在每个函数的开始和结束时计时，然后统计每个函数的执行时间。python自带的<code>Profile</code>和<code>cProfile</code>模块就是这个原理。但是插桩会有两个问题，一是插桩计时本身带来的性能消耗<code>overhead</code>极大，二是对一个正在运行的程序没法插桩。</p>
+</li>
+<li><p>采样</p>
+<p> 采样是注入正在运行的进程，高频地去探测函数调用栈。根据大数定理，探测到次数越多的函数运行时间越长。pyflame正是基于采样的原理。统计结果用另一个神器——火焰图<a href="http://www.brendangregg.com/flamegraphs.html" target="_blank" rel="noopener">flamegraph</a>展示，我们就可以完整地了解cpu运行状态。</p>
+</li>
+</ol>
+<h1 id="使用pyflame和火焰图"><a href="#使用pyflame和火焰图" class="headerlink" title="使用pyflame和火焰图"></a>使用pyflame和火焰图</h1><p>官方提供了pyflame源码，需要自己编译对应python版本，然后调用flamegraph生成火焰图svg。具体可以看<a href="https://pyflame.readthedocs.io/en/latest/" target="_blank" rel="noopener">官方文档</a>。为了方便自己人使用，我写了个pyflame-server。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/05/24/pyflame/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+      
+
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://meteorix.github.io/2019/04/30/pytorch-coredump/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -376,7 +555,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-05-03 20:38:01" itemprop="dateModified" datetime="2019-05-03T20:38:01+08:00">2019-05-03</time>
+                <time title="Modified: 2019-05-24 20:05:13" itemprop="dateModified" datetime="2019-05-24T20:05:13+08:00">2019-05-24</time>
               
             
           </span>
@@ -1561,7 +1740,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-count">8</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -1588,7 +1767,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">4</span>
+                      
+                    
+                    <span class="site-state-item-count">5</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
