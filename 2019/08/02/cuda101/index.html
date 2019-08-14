@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.1.0',
+    sidebar: {"position":"left","display":"always","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="cuda 101最近开始做深度学习后端和性能优化，做到模型部分需要补补gpu和cuda知识。记录此篇入门笔记，配合官方文档食用。 NVIDIA的官方文档和blog写的真好，读了一天非常舒服。很多之前调包（Pytorch/Tensorflow)不理解的地方，都有更深的认识，期待尽早开始写自己的kernel。 get started从这篇官方博客开始quickstart，写的非常好，可以快速了解gpu">
+<meta name="keywords" content="cuda,深度学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cuda 101">
+<meta property="og:url" content="https://meteorix.github.io/2019/08/02/cuda101/index.html">
+<meta property="og:site_name" content="Meteorix&#39;s Blog">
+<meta property="og:description" content="cuda 101最近开始做深度学习后端和性能优化，做到模型部分需要补补gpu和cuda知识。记录此篇入门笔记，配合官方文档食用。 NVIDIA的官方文档和blog写的真好，读了一天非常舒服。很多之前调包（Pytorch/Tensorflow)不理解的地方，都有更深的认识，期待尽早开始写自己的kernel。 get started从这篇官方博客开始quickstart，写的非常好，可以快速了解gpu">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://meteorix.github.io/images/cuda101/grid.jpg">
+<meta property="og:image" content="https://meteorix.github.io/images/cuda101/nvprof.png">
+<meta property="og:image" content="https://meteorix.github.io/images/cuda101/matrix.png">
+<meta property="og:image" content="https://meteorix.github.io/images/cuda101/shared_matrix.png">
+<meta property="og:image" content="https://meteorix.github.io/images/cuda101/graph.jpg">
+<meta property="og:updated_time" content="2019-08-14T10:13:16.084Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cuda 101">
+<meta name="twitter:description" content="cuda 101最近开始做深度学习后端和性能优化，做到模型部分需要补补gpu和cuda知识。记录此篇入门笔记，配合官方文档食用。 NVIDIA的官方文档和blog写的真好，读了一天非常舒服。很多之前调包（Pytorch/Tensorflow)不理解的地方，都有更深的认识，期待尽早开始写自己的kernel。 get started从这篇官方博客开始quickstart，写的非常好，可以快速了解gpu">
+<meta name="twitter:image" content="https://meteorix.github.io/images/cuda101/grid.jpg">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://meteorix.github.io/2019/08/02/cuda101/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>cuda 101 | Meteorix's Blog</title>
+  
+
+
+
+
+  <script async src="//www.googletagmanager.com/gtag/js?id=UA-138766747-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-138766747-1');
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Meteorix's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://meteorix.github.io/2019/08/02/cuda101/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="meteorix">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/qiyu.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Meteorix's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">cuda 101
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-08-02 11:58:11" itemprop="dateCreated datePublished" datetime="2019-08-02T11:58:11+08:00">2019-08-02</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-08-14 18:13:16" itemprop="dateModified" datetime="2019-08-14T18:13:16+08:00">2019-08-14</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="cuda-101"><a href="#cuda-101" class="headerlink" title="cuda 101"></a>cuda 101</h1><p>最近开始做深度学习后端和性能优化，做到模型部分需要补补gpu和cuda知识。记录此篇入门笔记，配合官方文档食用。</p>
+<p>NVIDIA的官方文档和blog写的真好，读了一天非常舒服。很多之前调包（Pytorch/Tensorflow)不理解的地方，都有更深的认识，期待尽早开始写自己的kernel。</p>
+<h2 id="get-started"><a href="#get-started" class="headerlink" title="get started"></a>get started</h2><p>从这篇官方博客开始quickstart，写的非常好，可以快速了解gpu特性、编程模型、显存等</p>
+<p><a href="https://devblogs.nvidia.com/even-easier-introduction-cuda/" target="_blank" rel="noopener">https://devblogs.nvidia.com/even-easier-introduction-cuda/</a></p>
+<h2 id="线程结构"><a href="#线程结构" class="headerlink" title="线程结构"></a>线程结构</h2><p><img src="/images/cuda101/grid.jpg" alt="image"></p>
+<a id="more"></a>
+<p>gpu上每个kernel函数调用，会包括</p>
+<p>1 <em> grid — n </em> block — m * thread</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// blockdim == m</span></span><br><span class="line"><span class="comment">// griddim == n</span></span><br><span class="line"></span><br><span class="line">__<span class="function">global__ <span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">float</span> *x, <span class="keyword">float</span> *y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> index = blockIdx.x * blockDim.x + threadIdx.x;</span><br><span class="line">  <span class="keyword">int</span> stride = blockDim.x * gridDim.x;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = index; i &lt; n; i += stride)</span><br><span class="line">    y[i] = x[i] + y[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>blockdim</code>和<code>griddim</code>可以是1/2/3维的，方便不同维度的矩阵运算</p>
+<h2 id="内存分配"><a href="#内存分配" class="headerlink" title="内存分配"></a>内存分配</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> N = <span class="number">1</span>&lt;&lt;<span class="number">20</span>;</span><br><span class="line"><span class="keyword">float</span> *x, *y;</span><br><span class="line"><span class="comment">// Allocate Unified Memory – accessible from CPU or GPU</span></span><br><span class="line">cudaMallocManaged(&amp;x, N*<span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line">cudaMallocManaged(&amp;y, N*<span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line">...</span><br><span class="line"><span class="comment">// Run kernel on 1M elements on the GPU</span></span><br><span class="line">add&lt;&lt;&lt;<span class="number">1</span>, <span class="number">1</span>&gt;&gt;&gt;(N, x, y);</span><br><span class="line">...</span><br><span class="line"><span class="comment">// Free memory</span></span><br><span class="line">cudaFree(x);</span><br><span class="line">cudaFree(y);</span><br></pre></td></tr></table></figure>
+<p>分配虚拟的共享内存，cpu和gpu都能访问</p>
+<h2 id="nvprof"><a href="#nvprof" class="headerlink" title="nvprof"></a>nvprof</h2><p><img src="/images/cuda101/nvprof.png" alt="image"></p>
+<p>从上往下可以看出：</p>
+<ol>
+<li>kernel function调用（gpu device）</li>
+<li>cuda c runtime调用（cpu host）</li>
+<li>显存/内存migration调用</li>
+</ol>
+<p>这个感觉会很有用，可以认真profile一下pytorch程序</p>
+<h2 id="两种显存-内存分配方式"><a href="#两种显存-内存分配方式" class="headerlink" title="两种显存-内存分配方式"></a>两种显存-内存分配方式</h2><p>在我的titan xp卡上，nvprof出来的结果不对，加了很多block并行并没有加速kernel function。上面的博客非常贴心的提示了这个问题，引出下面的博客：</p>
+<p><a href="https://devblogs.nvidia.com/unified-memory-cuda-beginners/" target="_blank" rel="noopener">https://devblogs.nvidia.com/unified-memory-cuda-beginners/</a></p>
+<p>原来是两种不同的共享内存分享方式</p>
+<ol>
+<li>旧的（kapler），先分配到gpu，cpu访问时引起page fault，再从gpu读取</li>
+<li>新的（pascal)，先分配到cpu，gpu访问时引起page fault，再从cpu读取</li>
+</ol>
+<p>新的好处：</p>
+<ol>
+<li>gpu物理显存不用占太多，按需取</li>
+<li>多gpu可以共享虚拟内存表（似乎是这个意思）</li>
+</ol>
+<blockquote>
+<p>注意： profile的时候，第一次会算上migration内存的时间，可以先prefetch解决这个问题</p>
+</blockquote>
+<h2 id="bandwidth"><a href="#bandwidth" class="headerlink" title="bandwidth"></a>bandwidth</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">显存的上限在500GB/s这个数量级</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-------</span><br><span class="line"></span><br><span class="line">**下面开始进入正经的cuda c编程指南**</span><br><span class="line"></span><br><span class="line">https://docs.nvidia.com/cuda/cuda-c-programming-guide/</span><br><span class="line"></span><br><span class="line">## gpu设计</span><br><span class="line"></span><br><span class="line">&gt; 摩尔定律限制了芯片上的晶体管数量</span><br><span class="line"></span><br><span class="line">*   cpu芯片的晶体管大部分用在了control、cache(L1/L2/L3)、少量 的alu</span><br><span class="line">*   gpu芯片则绝大部分用在了alu，少量control和cache</span><br><span class="line"></span><br><span class="line">这使得gpu计算（GFLOPS）和memory access能力大了好多个数量级。适合大量data并行计算，少control flow</span><br><span class="line"></span><br><span class="line">![image](/images/cuda101/transistors.png)</span><br><span class="line"></span><br><span class="line">## 自动多核并行</span><br><span class="line"></span><br><span class="line">每个核(SM)按block分配，自动占满所有SM</span><br><span class="line"></span><br><span class="line">![image](/images/cuda101/autoscale.png)</span><br><span class="line"></span><br><span class="line">## 内存结构</span><br><span class="line"></span><br><span class="line">1. 线程内本地内存</span><br><span class="line">1. block内共享内存——block里面的thread间共享</span><br><span class="line">1. global内存——block间和grid间共享</span><br><span class="line"></span><br><span class="line">![image](/images/cuda101/mem.png)</span><br><span class="line"></span><br><span class="line">## Unified Memory</span><br><span class="line"></span><br><span class="line">cpu和gpu实际上是异构编程，执行运算是异步的，分配内存也是在不同的物理设备</span><br><span class="line"></span><br><span class="line">unified memory是将两块内存伪装成同一份managed memory，大大减小了编程难度</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## nvcc编译</span><br><span class="line"></span><br><span class="line">### 离线编译</span><br><span class="line"></span><br><span class="line">1. 分离device代码和host代码</span><br><span class="line">1. device代码编译成汇编（ptx）或者二进制</span><br><span class="line">1. host代码替换&lt;&lt;&lt;...&gt;&gt;&gt;成cuda c runtime函数，然后由nvcc调用gcc/g++等编译器编译</span><br><span class="line"></span><br><span class="line">### jit编译</span><br><span class="line"></span><br><span class="line">1. ptx代码，可以在runtime进一步被编译成device二进制代码，这就是jit</span><br><span class="line">1. 好处是在保证ptx兼容性的情况下，旧的程序可以享受新的硬件</span><br><span class="line">1. jit编译之后，第一次会生成一个cache，driver更新会cache会失效</span><br><span class="line"></span><br><span class="line">### 兼容性</span><br><span class="line">1. 二进制兼容性</span><br><span class="line">2. ptx兼容性</span><br><span class="line">3. 应用兼容性</span><br><span class="line">4. c/c++兼容性  device代码只支持c++子集</span><br><span class="line">5. 64bit兼容性  </span><br><span class="line"></span><br><span class="line">主要是一些编译选项，用的时候查文档吧</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## CUDA C Runtime</span><br><span class="line">``cudart library``  静态链接库、动态链接库都有提供</span><br><span class="line"></span><br><span class="line">### 初始化</span><br><span class="line">*   cuda代码第一次运行的时候，会隐式初始化。profile的时候注意忽略这个时间。</span><br><span class="line">*   每个device初始化一个CUDA context，进程内所有线程共享这些context，然后jit编译pxt代码，load进显存。</span><br><span class="line">*   host可以通过cudaSetDevice(1)  指定运行的context，即指定运行的gpu卡</span><br><span class="line">*   进程可以cudaDeviceReset()手动销毁这个context</span><br><span class="line"></span><br><span class="line">#### 设备显存</span><br><span class="line"></span><br><span class="line">显存可以是``linear memory``或者``cuda arrays``</span><br><span class="line"></span><br><span class="line">``cuda arrays``好像是用于``texture``（游戏引擎的texture？后面再研究这个）</span><br><span class="line"></span><br><span class="line">``linear memory``就是正经的40bit地址了，可以用指针指向</span><br><span class="line"></span><br><span class="line">```cpp</span><br><span class="line">cudaMalloc()</span><br><span class="line">cudaFree()</span><br><span class="line">cudaMemcpy()  // host-device device-host device-device三种</span><br><span class="line">cudaMallocPitch()  // 2d</span><br><span class="line">cudaMalloc3D()  // 3d</span><br></pre></td></tr></table></figure>
+<p>要注意分配2d/3d内存的时候，index和stride方式稍有变化，指针别用错了</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 各种memcpy全局显存的方式</span></span><br><span class="line">__constant__ <span class="keyword">float</span> constData[<span class="number">256</span>];</span><br><span class="line"><span class="keyword">float</span> data[<span class="number">256</span>];</span><br><span class="line">cudaMemcpyToSymbol(constData, data, <span class="keyword">sizeof</span>(data));</span><br><span class="line">cudaMemcpyFromSymbol(data, constData, <span class="keyword">sizeof</span>(data));</span><br><span class="line"></span><br><span class="line">__device__ <span class="keyword">float</span> devData;</span><br><span class="line"><span class="keyword">float</span> value = <span class="number">3.14f</span>;</span><br><span class="line">cudaMemcpyToSymbol(devData, &amp;value, <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line"></span><br><span class="line">__device__ <span class="keyword">float</span>* devPointer;</span><br><span class="line"><span class="keyword">float</span>* ptr;</span><br><span class="line">cudaMalloc(&amp;ptr, <span class="number">256</span> * <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line">cudaMemcpyToSymbol(devPointer, &amp;ptr, <span class="keyword">sizeof</span>(ptr));</span><br></pre></td></tr></table></figure>
+<h4 id="共享显存-shared-memory"><a href="#共享显存-shared-memory" class="headerlink" title="共享显存 shared memory"></a>共享显存 shared memory</h4><p>注意区分<code>unified memory</code>，这里是说同一block中thread shared memory</p>
+<p><code>shared memory</code>比<code>global memory</code>快很多，相当于cpu的L1 cache？</p>
+<p>下面利用<code>shared memory</code>实现更快的矩阵乘法，这个例子太经典了，<a href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#shared-memory" target="_blank" rel="noopener">链接在这里经常复习下</a></p>
+<p>没有使用shared memory时，需要访问<code>A.width*B.height</code>次global memory</p>
+<p><img src="/images/cuda101/matrix.png" alt="image"></p>
+<p>使用shared memory，将一个block的数据一次性读取到shared memory，访问global memory的次数降为<code>(A.width/block_size)*(B.height/block_size)</code> </p>
+<p><img src="/images/cuda101/shared_matrix.png" alt="image"></p>
+<h4 id="page-locked-host-memory"><a href="#page-locked-host-memory" class="headerlink" title="page-locked host memory"></a>page-locked host memory</h4><p>有点像把host memory mmap到device memory，好处有：</p>
+<ul>
+<li>memcpy和kernel执行是并行的</li>
+<li>mapped到显存，甚至不用memcpy了</li>
+<li>bandwith更高</li>
+</ul>
+<p>page-locked host memory是整个系统层面珍稀的资源，不要滥用。</p>
+<p>有三种使用方式，具体用的时候再研究：</p>
+<ul>
+<li>portable</li>
+<li>write-combining</li>
+<li>mapped</li>
+</ul>
+<h3 id="异步执行"><a href="#异步执行" class="headerlink" title="异步执行"></a>异步执行</h3><p>所有host计算、device计算、所有类型的memcpy之间都是异步的、可以并发的。</p>
+<p>注意profile的时候，可以用<code>CUDA_LAUNCH_BLOCKING</code>环境变量disable掉异步。(以后要用好Nsight/Visual Profiler)</p>
+<h4 id="异步模型"><a href="#异步模型" class="headerlink" title="异步模型"></a>异步模型</h4><p>目测有两种重要的异步编程模型：stream和graph</p>
+<h4 id="stream"><a href="#stream" class="headerlink" title="stream"></a>stream</h4><p>stream有点像游戏引擎，开一个或者多个stream，host代码往stream中发计算指令，需要的时候synchronize。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// 两个stream并行的例子</span><br><span class="line">for (int i = 0; i &lt; 2; ++i)</span><br><span class="line">    cudaMemcpyAsync(inputDevPtr + i * size, hostPtr + i * size,</span><br><span class="line">                    size, cudaMemcpyHostToDevice, stream[i]);</span><br><span class="line">for (int i = 0; i &lt; 2; ++i)</span><br><span class="line">    MyKernel&lt;&lt;&lt;100, 512, 0, stream[i]&gt;&gt;&gt;</span><br><span class="line">          (outputDevPtr + i * size, inputDevPtr + i * size, size);</span><br><span class="line">    for (int i = 0; i &lt; 2; ++i)</span><br><span class="line">    cudaMemcpyAsync(hostPtr + i * size, outputDevPtr + i * size,</span><br><span class="line">                    size, cudaMemcpyDeviceToHost, stream[i]);</span><br></pre></td></tr></table></figure>
+<p>stream也支持callback，异步执行完之后callback host代码。注意callback不能再有cuda调用，否则会死锁。</p>
+<h4 id="graph"><a href="#graph" class="headerlink" title="graph"></a>graph</h4><p>graph则是定义好所有计算指令作为node，计算顺序和依赖关系也定义好作为edge，定义好之后每一步触发执行</p>
+<p><img src="/images/cuda101/graph.jpg" alt="image"></p>
+<p>stream追求灵活、graph则是更适合复杂的计算关系和追求执行效率</p>
+<p>Graph可以用两种方式定义：</p>
+<ol>
+<li>录制stream</li>
+<li>手动定义node和edge</li>
+</ol>
+<h4 id="event"><a href="#event" class="headerlink" title="event"></a>event</h4><p>多个stream之间，可以用event同步，类似<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">event还能用于多stream录制成一个graph，wait event，相当于```thread.join()```吧。</span><br><span class="line"></span><br><span class="line">还有个用途，可以用来异步计时。定义start和stop event，然后使用``cudaEventElaspedTime``</span><br><span class="line"></span><br><span class="line">### 多卡</span><br><span class="line"></span><br><span class="line">多卡切换</span><br><span class="line">```cpp</span><br><span class="line">cudaSetDevice(0);</span><br><span class="line">cudaSetDevice(1);</span><br></pre></td></tr></table></figure></p>
+<p>stream和device是绑定的，可以用event来同步多卡之间的stream</p>
+<p>64bit程序，可以通过api开启多卡之间的显存访问（目测多卡训练会有用？）</p>
+<h3 id="虚拟内存"><a href="#虚拟内存" class="headerlink" title="虚拟内存"></a>虚拟内存</h3><p>64bit程序，host和device共用一个虚拟内存，可以参考上面的<code>显存-内存分配方式`</code></p>
+<h3 id="IPC"><a href="#IPC" class="headerlink" title="IPC"></a>IPC</h3><p>cuda也提供了IPC方式，多进程可以share显存指针和event</p>
+<p>后面在研究吧。。。</p>
+<h3 id="error-amp-callstack"><a href="#error-amp-callstack" class="headerlink" title="error &amp; callstack"></a>error &amp; callstack</h3><p>cuda-gdb / Nsight</p>
+<h3 id="texture"><a href="#texture" class="headerlink" title="texture"></a>texture</h3><p>后面再研究吧，应该是游戏引擎用的？或者黑科技加速？</p>
+<p>还能跟opengl/dx接口交互。。。</p>
+<h2 id="性能指南"><a href="#性能指南" class="headerlink" title="性能指南"></a>性能指南</h2><p>TODO….</p>
+
+      
+    </div>
+
+    
+      
+
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/cuda/" rel="tag"># cuda</a>
+          
+            <a href="/tags/深度学习/" rel="tag"># 深度学习</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/07/netease-games/" rel="next" title="6年后，为什么离开网易游戏">
+                <i class="fa fa-chevron-left"></i> 6年后，为什么离开网易游戏
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/qiyu.jpg" alt="meteorix">
+            
+              <p class="site-author-name" itemprop="name">meteorix</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/meteorix" title="GitHub &rarr; https://github.com/meteorix" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#cuda-101"><span class="nav-number">1.</span> <span class="nav-text">cuda 101</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#get-started"><span class="nav-number">1.1.</span> <span class="nav-text">get started</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程结构"><span class="nav-number">1.2.</span> <span class="nav-text">线程结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存分配"><span class="nav-number">1.3.</span> <span class="nav-text">内存分配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nvprof"><span class="nav-number">1.4.</span> <span class="nav-text">nvprof</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#两种显存-内存分配方式"><span class="nav-number">1.5.</span> <span class="nav-text">两种显存-内存分配方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bandwidth"><span class="nav-number">1.6.</span> <span class="nav-text">bandwidth</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#共享显存-shared-memory"><span class="nav-number">1.6.0.1.</span> <span class="nav-text">共享显存 shared memory</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#page-locked-host-memory"><span class="nav-number">1.6.0.2.</span> <span class="nav-text">page-locked host memory</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异步执行"><span class="nav-number">1.6.1.</span> <span class="nav-text">异步执行</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#异步模型"><span class="nav-number">1.6.1.1.</span> <span class="nav-text">异步模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#stream"><span class="nav-number">1.6.1.2.</span> <span class="nav-text">stream</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#graph"><span class="nav-number">1.6.1.3.</span> <span class="nav-text">graph</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#event"><span class="nav-number">1.6.1.4.</span> <span class="nav-text">event</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#虚拟内存"><span class="nav-number">1.6.2.</span> <span class="nav-text">虚拟内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IPC"><span class="nav-number">1.6.3.</span> <span class="nav-text">IPC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#error-amp-callstack"><span class="nav-number">1.6.4.</span> <span class="nav-text">error &amp; callstack</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#texture"><span class="nav-number">1.6.5.</span> <span class="nav-text">texture</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能指南"><span class="nav-number">1.7.</span> <span class="nav-text">性能指南</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">meteorix</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.1.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

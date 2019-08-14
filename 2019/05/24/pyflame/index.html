@@ -107,7 +107,7 @@
 <meta property="og:image" content="https://meteorix.github.io/images/pyflame/profile_py.svg">
 <meta property="og:image" content="https://meteorix.github.io/images/pyflame/Python-Thread-State.png">
 <meta property="og:image" content="https://meteorix.github.io/images/pyflame/profile_c.svg">
-<meta property="og:updated_time" content="2019-06-06T17:29:36.625Z">
+<meta property="og:updated_time" content="2019-08-11T08:20:07.885Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Pyflame解析和扩展">
 <meta name="twitter:description" content="Pyflame是uber开源的一个python性能profiler。  没有profile的优化就是耍流氓  说起python，被吐槽最多的就是慢。根据上面的名言，首先我们需要一个性能profiler。 profiler的两种原理profile工具基本分成两种思路：  插桩  这个理解起来非常直白，在每个函数的开始和结束时计时，然后统计每个函数的执行时间。python自带的Profile和cPro">
@@ -382,7 +382,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-06-07 01:29:36" itemprop="dateModified" datetime="2019-06-07T01:29:36+08:00">2019-06-07</time>
+                <time title="Modified: 2019-08-11 16:20:07" itemprop="dateModified" datetime="2019-08-11T16:20:07+08:00">2019-08-11</time>
               
             
           </span>
@@ -462,7 +462,7 @@
 <li>修复py3.7兼容性问题，感谢pr</li>
 <li>修复anaconda的兼容性问题，感谢另一个pr</li>
 <li>增加dockerfile，enable所有abi，目前同时支持py2.6/2.7/3.4-3.7</li>
-<li>试图增加c/c++ profile</li>
+<li>支持c/c++ profile，c/c++栈与python栈合并显示</li>
 </ol>
 <h1 id="How-magic-happens"><a href="#How-magic-happens" class="headerlink" title="How magic happens"></a>How magic happens</h1><p>Uber官方博客给了一篇<a href="https://eng.uber.com/pyflame/" target="_blank" rel="noopener">由浅入深的讲解</a>，这里简单提几个关键点。</p>
 <h2 id="ptrace"><a href="#ptrace" class="headerlink" title="ptrace"></a>ptrace</h2><p>linux操作系统提供了一个强大的系统调用<code>ptrace</code>，让你可以注入任意进程(有sudo权限就是可以为所欲为)查看当前的寄存器、运行栈和内存，甚至可以任意修改别人的进程。</p>
@@ -601,7 +601,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">9</span>
+                    <span class="site-state-item-count">10</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -634,7 +634,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">7</span>
+                      
+                    
+                    <span class="site-state-item-count">8</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
