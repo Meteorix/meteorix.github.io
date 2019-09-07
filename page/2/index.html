@@ -98,7 +98,7 @@
 
   <meta property="og:type" content="website">
 <meta property="og:title" content="Meteorix&#39;s Blog">
-<meta property="og:url" content="https://meteorix.github.io/archives/2019/08/index.html">
+<meta property="og:url" content="https://meteorix.github.io/page/2/index.html">
 <meta property="og:site_name" content="Meteorix&#39;s Blog">
 <meta property="og:locale" content="default">
 <meta name="twitter:card" content="summary">
@@ -110,7 +110,7 @@
 
   
   
-  <link rel="canonical" href="https://meteorix.github.io/archives/2019/08/">
+  <link rel="canonical" href="https://meteorix.github.io/page/2/">
 
 
 
@@ -120,7 +120,7 @@
   };
 </script>
 
-  <title>Archive | Meteorix's Blog</title>
+  <title>Meteorix's Blog</title>
   
 
 
@@ -179,7 +179,8 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left 
+  page-home">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -234,7 +235,7 @@
         
         
           
-          <li class="menu-item menu-item-archives menu-item-active">
+          <li class="menu-item menu-item-archives">
 
     
     
@@ -293,93 +294,197 @@
           
             
 
-    
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
-
           
           <div id="content" class="content">
             
+  <section id="posts" class="posts-expand">
+    
+      
+
+  
 
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
 
-      
-      <span class="archive-page-counter">
-        
-        
-        
-          
-        
-        Um..! 11 posts in total. Keep on posting.
-      </span>
-      
-
-      
-
-        
-        
-        
-
-        
-          
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2019">2019</h1>
-          </div>
-        
-        
-
-        
+  
 
   <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://meteorix.github.io/2018/06/20/py-patterns/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="meteorix">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/qiyu.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Meteorix's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
         
-          <a class="post-title-link" href="/2019/08/02/cuda101/" itemprop="url">
-            
-              <span itemprop="name">cuda 101</span>
-            
-          </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2018/06/20/py-patterns/" class="post-title-link" itemprop="url">Python Design Patterns</a>
+              
+            
+          </h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-08-02T11:58:11+08:00" content="2019-08-02">
-          08-02
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
 
-    </header>
-  </article>
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-06-20 20:41:32" itemprop="dateCreated datePublished" datetime="2018-06-20T20:41:32+08:00">2018-06-20</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-04-22 23:49:54" itemprop="dateModified" datetime="2019-04-22T23:49:54+08:00">2019-04-22</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>如何写出更好的代码——刘欣 2018.6.20</p>
+<blockquote>
+<p>“Design patterns help you learn from others’ successes instead of your own failures”</p>
+</blockquote>
+<p>断断续续读了好久设计模式，记录此篇总结。设计模式最初发源于C++/Java等静态语言，Python语言本身的很多特性已经覆盖了设计模式，甚至用了都不知道，比如：decorator/metaclass/generator/getattr等。但是写稍微大型的项目时，还是经常力不从心。就如上面引用的那句话，通过设计模式可以学习前人的智慧，写出更好的代码。</p>
+<p>所有代码都在<a href="https://github.com/Meteorix/python-design-patterns" target="_blank" rel="noopener">https://github.com/Meteorix/python-design-patterns</a>，python3环境下可以跑通，请跑起来玩玩。代码仅限演示作用，更注重清晰地用python语法展示patterns，而不是完备性，请勿用在生产环境。欢迎提issue和pr : )</p>
+<h2 id="设计模式六大原则"><a href="#设计模式六大原则" class="headerlink" title="设计模式六大原则"></a>设计模式六大原则</h2><ol>
+<li><p>单一职责原则</p>
+<ul>
+<li>一个类只做一件事情，模块化</li>
+</ul>
+</li>
+<li><p>里氏替换原则</p>
+<ul>
+<li>所有使用父类的地方必须能完全替换为使用其子类</li>
+<li>即：子类可以扩展父类的功能，但不能改变父类原有的功能
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2018/06/20/py-patterns/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </li></ul></li></ol></div>
+
+    
+      
 
 
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
 
       
 
-    </div>
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
   </div>
   
   
   
+  </article>
+
+
+    
+  </section>
 
   
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
 
 
 

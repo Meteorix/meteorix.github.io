@@ -314,6 +314,168 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://meteorix.github.io/2019/09/07/bert-runtime/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="meteorix">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/qiyu.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Meteorix's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/09/07/bert-runtime/" class="post-title-link" itemprop="url">BERT Runtime</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-09-07 15:03:33 / Modified: 15:55:41" itemprop="dateCreated datePublished" datetime="2019-09-07T15:03:33+08:00">2019-09-07</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="BERT-Runtime"><a href="#BERT-Runtime" class="headerlink" title="BERT Runtime"></a>BERT Runtime</h1><p>最近继续怼<a href="https://arxiv.org/abs/1810.04805" target="_blank" rel="noopener">BERT</a>，项目大部分模型都上了BERT，真香啊。</p>
+<p>本来一直在使用<code>PyTorch JIT</code>来解决加速和部署的问题，顺手还写了个<a href="https://github.com/ShannonAI/service-streamer" target="_blank" rel="noopener">service-streamer</a>来做web和模型的中间件。<br>正好上个月NVIDIA开源了基于<code>TensorRT</code>的<a href="https://github.com/NVIDIA/TensorRT/tree/release/5.1/demo/BERT" target="_blank" rel="noopener">BERT代码</a>，官方<a href="https://devblogs.nvidia.com/nlu-with-tensorrt-bert/" target="_blank" rel="noopener">blog</a>号称单次<code>inference</code>只用2.2ms，比cpu快20倍。但是正确的问法是：这东西能比TF/PyTorch快多少呢？</p>
+<p>于是从<a href="https://developer.nvidia.com/tensorrt" target="_blank" rel="noopener">TensorRT</a>开始，认真学习了一波NVIDIA的BERT实现。并做了性能Benchmark对比TensorFlow和PyTorch，结论是gpu时间能快<strong>15%-30%</strong>。主要归因于对BERT的计算图优化，自己实现了4个cuda kernel，另外避免了TensorFlow和PyTorch等框架带来的overhead。</p>
+<h2 id="Prerequisite"><a href="#Prerequisite" class="headerlink" title="Prerequisite"></a>Prerequisite</h2><p>比较有用的几个背景知识：</p>
+<ol>
+<li>当然是BERT的<a href="https://arxiv.org/abs/1810.04805" target="_blank" rel="noopener">Paper</a>，<a href="https://github.com/google-research/bert" target="_blank" rel="noopener">Tensorflow实现</a>，<a href="https://github.com/huggingface/pytorch-transformers" target="_blank" rel="noopener">PyTorch实现</a></li>
+<li>Harvard写的著名解读<a href="http://nlp.seas.harvard.edu/2018/04/03/attention.html" target="_blank" rel="noopener">The Annotated Transformer</a></li>
+<li>GPU和Cuda基础知识，很简单可以参考我的<a href="https://github.com/Meteorix/meteorix-blog/blob/master/_posts/cuda101.md" target="_blank" rel="noopener">cuda101</a></li>
+</ol>
+<h2 id="TensorRT"><a href="#TensorRT" class="headerlink" title="TensorRT"></a>TensorRT</h2><p><strong>TensorRT</strong>是NVIDIA官方推出的inference引擎，建立在CUDA之上。可以对<code>TensorFlow/PyTorch</code>等框架训练出来的模型进行CUDA优化，达到更高的inference性能。同时支持低精度参数、跨平台部署等，总之就是对自己家的GPU使用的最好。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/09/07/bert-runtime/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+      
+
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://meteorix.github.io/2019/08/02/cuda101/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1844,189 +2006,13 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://meteorix.github.io/2018/06/20/py-patterns/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="meteorix">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/qiyu.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Meteorix's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2018/06/20/py-patterns/" class="post-title-link" itemprop="url">Python Design Patterns</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2018-06-20 20:41:32" itemprop="dateCreated datePublished" datetime="2018-06-20T20:41:32+08:00">2018-06-20</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-04-22 23:49:54" itemprop="dateModified" datetime="2019-04-22T23:49:54+08:00">2019-04-22</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>如何写出更好的代码——刘欣 2018.6.20</p>
-<blockquote>
-<p>“Design patterns help you learn from others’ successes instead of your own failures”</p>
-</blockquote>
-<p>断断续续读了好久设计模式，记录此篇总结。设计模式最初发源于C++/Java等静态语言，Python语言本身的很多特性已经覆盖了设计模式，甚至用了都不知道，比如：decorator/metaclass/generator/getattr等。但是写稍微大型的项目时，还是经常力不从心。就如上面引用的那句话，通过设计模式可以学习前人的智慧，写出更好的代码。</p>
-<p>所有代码都在<a href="https://github.com/Meteorix/python-design-patterns" target="_blank" rel="noopener">https://github.com/Meteorix/python-design-patterns</a>，python3环境下可以跑通，请跑起来玩玩。代码仅限演示作用，更注重清晰地用python语法展示patterns，而不是完备性，请勿用在生产环境。欢迎提issue和pr : )</p>
-<h2 id="设计模式六大原则"><a href="#设计模式六大原则" class="headerlink" title="设计模式六大原则"></a>设计模式六大原则</h2><ol>
-<li><p>单一职责原则</p>
-<ul>
-<li>一个类只做一件事情，模块化</li>
-</ul>
-</li>
-<li><p>里氏替换原则</p>
-<ul>
-<li>所有使用父类的地方必须能完全替换为使用其子类</li>
-<li>即：子类可以扩展父类的功能，但不能改变父类原有的功能
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2018/06/20/py-patterns/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </li></ul></li></ol></div>
-
-    
-      
-
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
+
 
 
           </div>
@@ -2068,7 +2054,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-count">11</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
