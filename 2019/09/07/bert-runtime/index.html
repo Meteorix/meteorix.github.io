@@ -111,7 +111,7 @@
 <meta property="og:image" content="https://meteorix.github.io/images/bert-runtime/std.jpg">
 <meta property="og:image" content="https://meteorix.github.io/images/bert-runtime/qkv.png">
 <meta property="og:image" content="https://meteorix.github.io/images/bert-runtime/async.png">
-<meta property="og:updated_time" content="2019-09-07T07:55:41.726Z">
+<meta property="og:updated_time" content="2019-09-07T11:52:42.586Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="BERT Runtime">
 <meta name="twitter:description" content="BERT Runtime最近继续怼BERT，项目大部分模型都上了BERT，真香啊。 本来一直在使用PyTorch JIT来解决加速和部署的问题，顺手还写了个service-streamer来做web和模型的中间件。正好上个月NVIDIA开源了基于TensorRT的BERT代码，官方blog号称单次inference只用2.2ms，比cpu快20倍。但是正确的问法是：这东西能比TF/PyTorch快">
@@ -369,7 +369,7 @@
                 
               
 
-              <time title="Created: 2019-09-07 15:03:33 / Modified: 15:55:41" itemprop="dateCreated datePublished" datetime="2019-09-07T15:03:33+08:00">2019-09-07</time>
+              <time title="Created: 2019-09-07 15:03:33 / Modified: 19:52:42" itemprop="dateCreated datePublished" datetime="2019-09-07T15:03:33+08:00">2019-09-07</time>
             
 
             
@@ -445,7 +445,8 @@
 <li>编译C++可执行文件，即可测试加速后的模型和输入输出，并保存为<code>bert.engine</code></li>
 </ol>
 <p>这个<code>bert.engine</code>文件，就可以单独使用了。既可以用C++ API或Python API加载后使用，也可以使用TensorRT Serving的docker直接加载做service。</p>
-<h3 id="Python-API"><a href="#Python-API" class="headerlink" title="Python API"></a>Python API</h3><p>当然PythonAPI更好用，所以</p>
+<h3 id="Python-API"><a href="#Python-API" class="headerlink" title="Python API"></a>Python API</h3><p>NVIDIA也提供了Python API来完成上面的几个步骤，需要多编译一些python binding。不过既然我都编好了C++版本，就只用Python API做inference。后面测试结果可以看出，Python API在模型inference的性能上与C++版本比几乎没有损耗。</p>
+<p>Python API的使用依赖<a href="https://developer.nvidia.com/pycuda" target="_blank" rel="noopener">pycuda</a>，这是另一个官方库，用来做Python与CUDA之间的直接交互。这里包括分配显存、内存与显存之间copy tensor等。读取<code>bert.engine</code>执行inference则是使用TensorRT发布的whl包。</p>
 <h3 id="复现NVIDIA提供的性能数据"><a href="#复现NVIDIA提供的性能数据" class="headerlink" title="复现NVIDIA提供的性能数据"></a>复现NVIDIA提供的性能数据</h3><p>NVIDIA官方数据是在<code>batchsize=1，seqlen=128</code>时测试的。在我们的Titan XP上分别使用C++和Python API，GPU时间都在<code>2.6ms</code>左右，基本复现了官方数据。</p>
 <p><img src="/images/bert-runtime/gpucpu.png" alt="gpucpu.png"></p>
 <p>比较有意思的是，明明与pytorch和tensorflow等框架比更能说明bert优化的效果，可能是为了diss cpu好卖gpu卡吧 :P</p>
